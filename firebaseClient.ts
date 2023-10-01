@@ -1,6 +1,10 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp, getApps, FirebaseApp, getApp } from "firebase/app";
-import { getFirestore, setLogLevel } from "firebase/firestore";
+import {
+  getFirestore,
+  initializeFirestore,
+  setLogLevel,
+} from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_apiKey,
@@ -20,4 +24,7 @@ if (getApps().length == 0) {
   firebaseApp = getApp();
 }
 
-export const db = getFirestore(firebaseApp);
+export const db = initializeFirestore(firebaseApp, {
+  experimentalForceLongPolling: true,
+});
+// export const db = getFirestore(firebaseApp);
