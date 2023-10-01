@@ -2,8 +2,9 @@
 import { db } from "../../firebaseClient";
 import { collection, doc, getDoc } from "firebase/firestore";
 import { useState, useEffect } from "react";
+import { postPlayer } from "@/components/util/makePlayer";
 
-interface Player {
+export interface Player {
     name: String,
     number: Number,
     height: Number
@@ -12,6 +13,9 @@ interface Player {
 export default function About() {
 
     const [curPlayer, setCurPlayer] = useState<Player>();
+    const [inputName, setInputName] = useState('');
+    const [inputNumber, setInputNumber] = useState('');
+    const [inputHeight, setInputHeight] = useState(''); 
 
     useEffect(() => {
         const lebron = getPlayerInfo(0)
@@ -27,12 +31,29 @@ export default function About() {
         return playerData;
     }
 
-    
-
     return (
         <>
             <h1>Player Info</h1>
-            <p>Name: {curPlayer ? curPlayer.name : ''}</p>
+            <input 
+                placeholder="Player name"
+                value={inputName}
+                onChange={(e) => setInputName(e.target.value)} />
+            <input 
+                placeholder="Player number"
+                value={inputNumber}
+                onChange={(e) => setInputNumber(e.target.value)} />
+            <input 
+                placeholder="Player height"
+                value={inputHeight}
+                onChange={(e) => setInputHeight(e.target.value)} />
+            <button onClick={() => {
+                let player : Player = {
+                    name: inputName,
+                    number: parseInt(inputNumber),
+                    height: parseInt(inputHeight)
+                };
+                postPlayer(player);
+            }}>Submit</button>
         </>
     );
 }
