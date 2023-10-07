@@ -7,7 +7,7 @@ import { firebaseApp } from "../../firebaseClient";
 
 export default function Login() {
     const [uid, setUid] = useState('nothin');
-    
+
     const auth = getAuth(firebaseApp);
     const provider = new GoogleAuthProvider();
 
@@ -17,9 +17,12 @@ export default function Login() {
         }
     })
 
-    useEffect(async () => {
-        const ref = doc(db, 'users', uid);
-        setDoc(ref, {});
+    useEffect(() => {
+        async function createUser(uid: string) {
+            const ref = doc(db, 'users', uid);
+            await setDoc(ref, {});
+        }
+        createUser(uid);
     }, [uid])
 
     async function handleSignIn() {
@@ -29,7 +32,7 @@ export default function Login() {
         if (result) {
             const user = result.user;
             setUid(user.uid);
-            
+
         }
     }
 
