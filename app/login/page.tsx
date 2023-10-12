@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import { getAuth, signInWithPopup, GoogleAuthProvider, signInWithRedirect, getRedirectResult, onAuthStateChanged } from "firebase/auth";
 import { firebaseApp } from "../../firebaseClient";
 import { useRouter } from "next/navigation";
+import { createUserDBEntry } from "@/components/util/userDBFunctions";
 
 
 export default function Login() {
@@ -20,27 +21,12 @@ export default function Login() {
         if (user) {
             setUid(user.uid);
             setEmail(user.email);
-            await createUserDBEntry(user.uid);
-            console.log("User signed in");
+            if (uid && email) {
+                await createUserDBEntry(uid, email);
+                console.log("User signed in");
+            }
         }
     })
-
-    async function createUserDBEntry(uid: string) {
-        const ref = doc(db, 'users', uid);
-        // only create the doc if it doesn't already exist exist
-        const docSnap = await getDoc(ref);
-        if (!docSnap.exists()) {
-            await setDoc(ref, {
-                email: email,
-                created: new Date(),
-                lastLogin: new Date()
-            })
-        } else {
-            await updateDoc(ref, {
-                lastLogin: new Date()
-            })
-        }
-    }
 
     async function handleSignIn() {
         await signInWithRedirect(auth, provider);
@@ -55,7 +41,7 @@ export default function Login() {
 
     async function redirectProfile() {
         // use next router to redirect to profile page
-        router.push("../profiles/" + uid)
+        router.push("login/editProfile")
     }
 
     return (
