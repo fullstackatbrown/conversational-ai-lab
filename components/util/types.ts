@@ -13,6 +13,17 @@ export interface UserData {
   postIds: string[];
 }
 
+export const dummyUserData: UserData = {
+  uid: "",
+  email: "",
+  joined: new Date(),
+  lastLogin: new Date(),
+  userName: "",
+  bio: "",
+  role: "reader" as UserRole,
+  postIds: [],
+};
+
 export interface Post {
   id: string;
   userUid: string;
