@@ -11,6 +11,8 @@ export interface UserData {
   bio: string;
   role: UserRole;
   postIds: string[];
+  // future fields:
+  // projects, discoveries, resume, links
 }
 
 export const dummyUserData: UserData = {
