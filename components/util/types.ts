@@ -1,4 +1,6 @@
 export type UserRole = "admin" | "writer" | "reader";
+export type PostType = "blog" | "forum";
+export type ForumType = "announcement" | "question";
 
 export interface UserData {
   uid: string;
@@ -26,9 +28,22 @@ export const dummyUserData: UserData = {
   postIds: [],
 };
 
+export const dummyPost: Post = {
+  uid: "",
+  created: new Date(),
+  lastUpdated: new Date(),
+  title: "",
+  textContent: "",
+  videoUrl: "",
+  published: false,
+  publishedOn: new Date(),
+  publishedBy: "",
+  postType: "",
+  forumType: ""
+}
+
 export interface Post {
-  id: string;
-  userUid: string;
+  uid: string;
   created: Date;
   lastUpdated: Date;
   title: string;
@@ -37,6 +52,8 @@ export interface Post {
   published: boolean;
   publishedOn?: Date;
   publishedBy?: string;
+  postType: string;
+  forumType?: string;
 }
 
 export interface CommentMetaData {

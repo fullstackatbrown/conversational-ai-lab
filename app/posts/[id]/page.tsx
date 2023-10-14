@@ -7,11 +7,6 @@ export default function Profile({ params }: { params: { id: string } }) {
 
     const id = params.id;
 
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-        // handle form submission here
-    }
-
     return (
         <div>
             <div>Post {id}</div>
