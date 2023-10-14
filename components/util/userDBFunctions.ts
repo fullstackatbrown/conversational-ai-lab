@@ -1,6 +1,7 @@
 import { UserData } from "./types";
 import { db } from "@/firebaseClient";
 import { collection, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
+
 export const getUserData = async (uid: string): Promise<UserData> => {
   const ref = doc(db, "users", uid);
   const docSnap = await getDoc(ref);
@@ -11,7 +12,7 @@ export const getUserData = async (uid: string): Promise<UserData> => {
   }
 };
 
-export async function createUserDBEntry(uid: string, email: string) {
+export const createUserDBEntry = async (uid: string, email: string) => {
   const ref = doc(db, "users", uid);
   // only create the doc if it doesn't already exist exist
   const docSnap = await getDoc(ref);
@@ -32,4 +33,11 @@ export async function createUserDBEntry(uid: string, email: string) {
       lastLogin: new Date(),
     });
   }
-}
+};
+
+export const updateUserData = async (userData: UserData) => {
+  const ref = doc(db, "users", userData.uid);
+  await updateDoc(ref, {
+    ...userData,
+  });
+};

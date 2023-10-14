@@ -11,6 +11,7 @@ import { createUserDBEntry } from "@/components/util/userDBFunctions";
 export default function Login() {
     const [uid, setUid] = useState<string | null>(null);
     const [email, setEmail] = useState<string | null>(null);
+    const [isLoading, setIsLoading] = useState<boolean>(true);
 
     const auth = getAuth(firebaseApp);
     const provider = new GoogleAuthProvider();
@@ -24,13 +25,17 @@ export default function Login() {
             if (uid && email) {
                 await createUserDBEntry(uid, email);
                 console.log("User signed in");
+                setIsLoading(false);
             }
+        } else {
+            setIsLoading(false);
         }
     })
 
     async function handleSignIn() {
         await signInWithRedirect(auth, provider);
-        await getRedirectResult(auth);
+        const result = await getRedirectResult(auth);
+
     }
 
     async function handleSignOut() {
@@ -46,9 +51,10 @@ export default function Login() {
 
     return (
         <div className="flex flex-col gap-5">
+            {isLoading && <div>Loading...</div>}
             <button onClick={() => handleSignIn()}>{email ? "Welcome, " + email + "!" : "Sign in"}</button>
             <button onClick={() => handleSignOut()} >Sign Out</button>
-            <button onClick={() => redirectProfile()}>Your Profile</button>
+            {uid && <button onClick={() => redirectProfile()}>Profile</button>}
         </div>
     );
 }
