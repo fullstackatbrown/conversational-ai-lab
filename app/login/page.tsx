@@ -35,6 +35,7 @@ export default function Login() {
     async function handleSignIn() {
         await signInWithRedirect(auth, provider);
         const result = await getRedirectResult(auth);
+
     }
 
     async function handleSignOut() {
