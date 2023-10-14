@@ -33,7 +33,6 @@ export const createUserDBEntry = async (uid: string, email: string) => {
       lastLogin: new Date(),
     });
   }
-};
 
 export const updateUserData = async (userData: UserData) => {
   const ref = doc(db, "users", userData.uid);
