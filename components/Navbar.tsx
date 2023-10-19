@@ -22,7 +22,12 @@ function classNames(...classes: string[]) {
     return classes.filter(Boolean).join(" ");
 }
 
-export default function Navbar() {
+interface NavbarProps {
+    uid: string;
+    profileUrl: string;
+}
+
+export default function Navbar({ uid, profileUrl }: NavbarProps) {
     return (
         // can change font by adding font (e.g. "font-serif") to className in next line
         <Disclosure as="nav" className="bg-gray-200 px-12">
@@ -73,7 +78,7 @@ export default function Navbar() {
                                     </div>
                                 </div>
                                 {/* Profile dropdown */}
-                                <Menu as="div" className="relative ml-3">
+                                {uid != "" ? (<Menu as="div" className="relative ml-3">
                                     <div>
                                         <Menu.Button className="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                                             <span className="absolute -inset-1.5" />
@@ -123,7 +128,7 @@ export default function Navbar() {
                                             </Menu.Item>
                                         </Menu.Items>
                                     </Transition>
-                                </Menu>
+                                </Menu>) : (<div className="flex space-x-4">Log in!</div>)}
                             </div>
                         </div>
                     </div>

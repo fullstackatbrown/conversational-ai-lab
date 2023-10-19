@@ -1,12 +1,39 @@
+'use client'
 import Image from 'next/image'
 import Navbar from "../components/Navbar"
 import { ArrowLongRightIcon } from '@heroicons/react/24/outline'
+import { useState } from 'react'
+import { GoogleAuthProvider, getAuth, onAuthStateChanged } from 'firebase/auth';
+import { firebaseApp } from '@/firebaseClient';
+import { createUserDBEntry } from '@/components/util/userDBFunctions';
 
 export default function Home() {
+  const [uid, setUid] = useState<string>("");
+  const [email, setEmail] = useState<string | null>(null);
+  const [profileUrl, setProfileUrl] = useState<string>("");
+
+  const auth = getAuth(firebaseApp)
+  const provider = new GoogleAuthProvider();
+
+  onAuthStateChanged(auth, async (user) => {
+    if (user) {
+      setUid(user.uid);
+      setEmail(user.email);
+      setProfileUrl(user.photoURL ? user.photoURL : "");
+      if (uid && email) {
+        await createUserDBEntry(uid, email, profileUrl);
+        console.log("User Signed in ");
+      } else {
+        console.log("User not signed in");
+      }
+    }
+  }
+  );
+
   return (
     <div className="flex flex-col lg:h-[200vh] h-[200vh]">
       <div className="sticky top-0 w-full">
-        <Navbar />
+        <Navbar uid={uid} profileUrl={profileUrl} />
       </div>
       <div className="flex flex-row flex-1">
         <div className="flex-auto flex items-center w-8/12 ">
@@ -33,5 +60,5 @@ export default function Home() {
         <div className="flex-auto w-4/12 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500"></div>
       </div>
     </div>
-  )
+  );
 }

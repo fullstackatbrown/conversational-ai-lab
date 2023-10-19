@@ -12,7 +12,11 @@ export const getUserData = async (uid: string): Promise<UserData> => {
   }
 };
 
-export const createUserDBEntry = async (uid: string, email: string) => {
+export const createUserDBEntry = async (
+  uid: string,
+  email: string,
+  profileUrl: string | null
+) => {
   const ref = doc(db, "users", uid);
   // only create the doc if it doesn't already exist exist
   const docSnap = await getDoc(ref);
@@ -27,6 +31,9 @@ export const createUserDBEntry = async (uid: string, email: string) => {
       lastLogin: new Date(),
       role: role,
       postIds: [],
+      profileUrl: profileUrl
+        ? profileUrl
+        : "https://static.vecteezy.com/system/resources/thumbnails/002/534/006/small/social-media-chatting-online-blank-profile-picture-head-and-body-icon-people-standing-icon-grey-background-free-vector.jpg",
     });
   } else {
     await updateDoc(ref, {

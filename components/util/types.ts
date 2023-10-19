@@ -11,6 +11,7 @@ export interface UserData {
   bio: string;
   role: UserRole;
   postIds: string[];
+  profileUrl: string;
 }
 
 export const dummyUserData: UserData = {
@@ -22,6 +23,7 @@ export const dummyUserData: UserData = {
   bio: "",
   role: "reader" as UserRole,
   postIds: [],
+  profileUrl: "",
 };
 
 export interface Post {
