@@ -1,11 +1,11 @@
 import Image from 'next/image'
-import Navbar from "../components/Navbar"
+// import Navbar from "../components/Navbar"
 
 export default function Home() {
   return (
     <div>
       <div className="sticky top-0">
-        <Navbar />
+        {/* <Navbar /> */}
       </div>
       <div className="flex flex-row h-[800px]">
         <div className="flex-auto w-8/12 bg-red-100">
