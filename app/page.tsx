@@ -3,9 +3,10 @@ import Image from 'next/image'
 import Navbar from "../components/Navbar"
 import { ArrowLongRightIcon } from '@heroicons/react/24/outline'
 import { useState } from 'react'
-import { GoogleAuthProvider, getAuth, onAuthStateChanged } from 'firebase/auth';
+import { GoogleAuthProvider, getAuth, onAuthStateChanged, signInWithRedirect, getRedirectResult } from 'firebase/auth';
 import { firebaseApp } from '@/firebaseClient';
 import { createUserDBEntry } from '@/components/util/userDBFunctions';
+import { useRouter } from 'next/navigation'
 
 export default function Home() {
   const [uid, setUid] = useState<string>("");
@@ -14,6 +15,8 @@ export default function Home() {
 
   const auth = getAuth(firebaseApp)
   const provider = new GoogleAuthProvider();
+
+  const router = useRouter();
 
   onAuthStateChanged(auth, async (user) => {
     if (user) {
@@ -30,10 +33,21 @@ export default function Home() {
   }
   );
 
+  async function handleSignIn() {
+    await signInWithRedirect(auth, provider);
+    const result = await getRedirectResult(auth);
+  }
+
+  async function handleSignOut() {
+    await auth.signOut();
+    setUid("");
+    setEmail("");
+  }
+
   return (
     <div className="flex flex-col lg:h-[200vh] h-[200vh]">
       <div className="sticky top-0 w-full">
-        <Navbar uid={uid} profileUrl={profileUrl} />
+        <Navbar uid={uid} profileUrl={profileUrl} handleSignIn={() => handleSignIn()} handleSignOut={() => handleSignOut()} />
       </div>
       <div className="flex flex-row flex-1">
         <div className="flex-auto flex items-center w-8/12 ">

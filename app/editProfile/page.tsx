@@ -3,7 +3,7 @@ import { firebaseApp } from "@/firebaseClient";
 import { GoogleAuthProvider, getAuth, onAuthStateChanged } from "firebase/auth";
 import { get } from "http";
 import { useState, useEffect } from "react";
-import { UserData, dummyUserData } from "../../../components/util/types";
+import { UserData, dummyUserData } from "../../components/util/types";
 import { getUserData, updateUserData } from "@/components/util/userDBFunctions";
 import { TextField } from "@mui/material"
 import { useRouter } from "next/navigation"
@@ -43,7 +43,7 @@ const EditProfile = (props: { uid: string }) => {
             bio: bio
         }
         updateUserData(newUserData).then(() => {
-            router.push("/login");
+            console.log("saved!")
         })
     }
 
@@ -87,6 +87,7 @@ const EditProfile = (props: { uid: string }) => {
                     onChange={(e) => setBio(e.target.value)}
                 />
                 <button onClick={onSubmission}>Submit</button>
+                <button onClick={() => router.push("./")}>Back to Home</button>
             </div>
         </div>)
 

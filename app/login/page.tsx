@@ -46,7 +46,7 @@
 
 //     async function redirectProfile() {
 //         // use next router to redirect to profile page
-//         router.push("login/editProfile")
+//         router.push("/editProfile")
 //     }
 
 //     return (
