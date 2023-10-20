@@ -2,21 +2,18 @@
 import Image from 'next/image'
 import Navbar from "../components/Navbar"
 import { ArrowLongRightIcon } from '@heroicons/react/24/outline'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { GoogleAuthProvider, getAuth, onAuthStateChanged, signInWithRedirect, getRedirectResult } from 'firebase/auth';
 import { firebaseApp } from '@/firebaseClient';
 import { createUserDBEntry } from '@/components/util/userDBFunctions';
 import { useRouter } from 'next/navigation'
 
-export default function Home() {
+export default function HomePage() {
   const [uid, setUid] = useState<string>("");
   const [email, setEmail] = useState<string | null>(null);
   const [profileUrl, setProfileUrl] = useState<string>("");
 
   const auth = getAuth(firebaseApp)
-  const provider = new GoogleAuthProvider();
-
-  const router = useRouter();
 
   onAuthStateChanged(auth, async (user) => {
     if (user) {
@@ -32,6 +29,46 @@ export default function Home() {
     }
   }
   );
+  return <div>{uid ? (<Home uid={uid} email={email} profileUrl={profileUrl} />) : <div>Signing you in...</div>}</div>
+}
+
+function Home(props: { uid: string, email: string | null, profileUrl: string }) {
+  const [uid, setUid] = useState<string>("");
+  const [email, setEmail] = useState<string | null>(null);
+  const [profileUrl, setProfileUrl] = useState<string>("");
+
+  const subText = ["Conversational ", "AI ", "Lab ", "at ", "Brown "]
+  const [subTextIndex, setSubTextIndex] = useState<number>(0);
+  const [titleSubText, setTitleSubtext] = useState<String>("")
+
+  useEffect(() => {
+    setUid(props.uid);
+    setEmail(props.email);
+    setProfileUrl(props.profileUrl);
+  }, [])
+
+  useEffect(() => {
+    if (subTextIndex < subText.length) {
+      let delay = subTextIndex == 0 ? 500 : 200
+      const timeout = setTimeout(() => {
+        setTitleSubtext(prevText => prevText + subText[subTextIndex]);
+        setSubTextIndex(prevIndex => prevIndex + 1);
+      }, delay);
+      return () => clearTimeout(timeout);
+    } else {
+      const timeout = setTimeout(() => {
+        setTitleSubtext("");
+        setSubTextIndex(0);
+      }, 3000);
+    }
+  }, [subTextIndex, subText]);
+
+
+  const auth = getAuth(firebaseApp)
+  const provider = new GoogleAuthProvider();
+
+  const router = useRouter();
+
 
   async function handleSignIn() {
     await signInWithRedirect(auth, provider);
@@ -53,7 +90,10 @@ export default function Home() {
         <div className="flex-auto flex items-center w-8/12 ">
           <div className='px-[70px] mb-[100px] space-y-3'>
             <h1 className="lg:text-6xl text-4xl font-bold">Welcome to</h1>
-            <div className="lg:text-5xl pl-1 text-2xl">Conversational AI Lab at Brown</div>
+            <div className="flex items-center gap-2">
+              <div className="text-[#D292FF] lg:text-5xl pl-1 text-2xl font-semibold">{titleSubText}</div>
+              <div className="inline-block w-8 h-8 rounded-full bg-[#D292FF] min-h-1" />
+            </div>
           </div>
         </div>
         <div className="flex-auto w-4/12 bg-gradient-to-r from-cyan-500 to-blue-500"></div>
