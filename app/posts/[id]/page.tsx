@@ -23,11 +23,11 @@ function EditPost(props: {pid: string, postData: Post, onSave: (post : Post) => 
     }
 
     return (
-        <>
-            <input placeholder="Title" value={title} onChange={(e) => setTitle(e.target.value)} />
-            <input placeholder="Body" value={body} onChange={(e) => setBody(e.target.value)} />
+        <div>
+            <input placeholder="Title" value={title} onChange={(e) => setTitle(e.target.value)} /> <br></br>
+            <input placeholder="Body" value={body} onChange={(e) => setBody(e.target.value)} /> <br></br>
             <button onClick={handleSave}>Save</button>
-        </>
+        </div>
     );
 }
 
@@ -40,13 +40,14 @@ function PostAuthed(props: { pid: string, uid: string }) {
 
     useEffect(() => {
         getPostData(props.pid).then((data : Post) => {
+            setUid(props.uid);
             setPostData(data);
             if (data.uid == props.uid) {
                 console.log(data.uid)
                 setEditable(true);
             }
         });
-    },[uid]);
+    });
 
     const handleSave = (newPost: Post) => {
         setEditMode(false);
@@ -76,7 +77,7 @@ export default function Post({ params }: { params: { id: string } }) {
     })
     return (
         <div>
-            {<PostAuthed uid={uid} pid={params.id}/>}
+            <PostAuthed uid={uid} pid={params.id}/>
         </div>
     )
 }
