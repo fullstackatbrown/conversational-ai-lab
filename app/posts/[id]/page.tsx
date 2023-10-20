@@ -39,9 +39,14 @@ function PostAuthed(props: { pid: string, uid: string }) {
     const auth = getAuth(firebaseApp);
 
     useEffect(() => {
+        setUid(props.uid);
+        console.log(uid);
+    }, [props.uid])
+
+    useEffect(() => {
         getPostData(props.pid).then((data: Post) => {
             setPostData(data);
-            if (data.uid == props.uid) {
+            if (data.uid == uid) {
                 console.log(data.uid)
                 setEditable(true);
             }

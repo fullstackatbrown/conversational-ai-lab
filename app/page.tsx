@@ -29,7 +29,7 @@ export default function HomePage() {
     }
   }
   );
-  return <div>{uid ? (<Home uid={uid} email={email} profileUrl={profileUrl} />) : <div>Signing you in...</div>}</div>
+  return <Home uid={uid} email={email} profileUrl={profileUrl} />
 }
 
 function Home(props: { uid: string, email: string | null, profileUrl: string }) {
@@ -45,7 +45,7 @@ function Home(props: { uid: string, email: string | null, profileUrl: string }) 
     setUid(props.uid);
     setEmail(props.email);
     setProfileUrl(props.profileUrl);
-  }, [])
+  }, [props.uid, props.email, props.profileUrl])
 
   useEffect(() => {
     if (subTextIndex < subText.length) {
