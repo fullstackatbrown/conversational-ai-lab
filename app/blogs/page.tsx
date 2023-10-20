@@ -6,24 +6,35 @@ import { createPost } from "@/components/util/postFunctions";
 import { useRouter } from "next/navigation";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { firebaseApp } from "@/firebaseClient";
+import Navbar from "@/components/Navbar";
 
 const Blogs = (props: { uid: string }) => {
+    const [uid, setUid] = useState<string>("");
     const [userData, setUserData] = useState<UserData>(dummyUserData);
     const router = useRouter();
 
     useEffect(() => {
-        getUserData(props.uid).then((userData: UserData) => {
-            setUserData(userData);
-        })
-    }, [])
+        setUid(props.uid);
+    }, [props.uid])
 
-     const handleCreate = async () => {
+    useEffect(() => {
+        if (uid) {
+            getUserData(props.uid).then((userData: UserData) => {
+                setUserData(userData);
+            })
+        }
+    }, [uid])
+
+    const handleCreate = async () => {
         let postID = await createPost(userData.uid);
         router.push(`/posts/${postID}`);
     }
 
     return (
-        <button onClick={handleCreate}>New Blog</button>
+        <div>
+            <h1 className="lg:text-5xl text-2xl text-center mt-4">Blogs</h1>
+            <button className="transition-all duration-500 hover:gradient-to-l hover:from-blue-500 hover:to-purple-500 text-gray-200 rounded-lg text-lg bg-gradient-to-r from-purple-500 to-blue-500 font-bold p-3" onClick={handleCreate}>New Blog</button>
+        </div>
     );
 }
 
@@ -37,9 +48,7 @@ const BlogsPage = () => {
         }
     })
     return (
-        <div>
-            {uid ? <Blogs uid={uid} /> : <div>loading...</div>}
-        </div>
+        <Blogs uid={uid} />
     )
 }
 
