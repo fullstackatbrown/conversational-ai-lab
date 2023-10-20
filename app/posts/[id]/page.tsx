@@ -5,7 +5,7 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { Post, dummyPost } from '@/components/util/types';
 import { getPostData, updatePost } from '@/components/util/postFunctions';
 
-function EditPost(props: {pid: string, postData: Post, onSave: (post : Post) => void}) {
+function EditPost(props: { pid: string, postData: Post, onSave: (post: Post) => void }) {
     const postData = props.postData;
     const [title, setTitle] = useState(postData.title);
     const [body, setBody] = useState(postData.textContent);
@@ -39,14 +39,14 @@ function PostAuthed(props: { pid: string, uid: string }) {
     const auth = getAuth(firebaseApp);
 
     useEffect(() => {
-        getPostData(props.pid).then((data : Post) => {
+        getPostData(props.pid).then((data: Post) => {
             setPostData(data);
             if (data.uid == props.uid) {
                 console.log(data.uid)
                 setEditable(true);
             }
         });
-    },[uid]);
+    }, [uid]);
 
     const handleSave = (newPost: Post) => {
         setEditMode(false);
@@ -55,8 +55,8 @@ function PostAuthed(props: { pid: string, uid: string }) {
 
     return (
         editMode ? (
-            <EditPost pid={props.pid} postData={postData} onSave={handleSave}/>
-        ) : (     
+            <EditPost pid={props.pid} postData={postData} onSave={handleSave} />
+        ) : (
             <div>
                 <h1>{postData.title}</h1>
                 <p>{postData.textContent}</p>
@@ -76,7 +76,7 @@ export default function Post({ params }: { params: { id: string } }) {
     })
     return (
         <div>
-            {<PostAuthed uid={uid} pid={params.id}/>}
-        </div>
+            {<PostAuthed uid={uid} pid={params.id} />}
+        </ div>
     )
 }
