@@ -15,6 +15,7 @@ export interface UserData {
   postIds: string[];
   // future fields:
   // projects, discoveries, resume, links
+  profileUrl: string;
 }
 
 export const dummyUserData: UserData = {
@@ -26,6 +27,7 @@ export const dummyUserData: UserData = {
   bio: "",
   role: "reader" as UserRole,
   postIds: [],
+  profileUrl: ""
 };
 
 export const dummyPost: Post = {
@@ -70,3 +72,4 @@ export interface CommentContent {
   metaData: CommentMetaData;
   textContent: string;
 }
+

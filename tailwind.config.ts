@@ -1,13 +1,13 @@
 import type { Config } from "tailwindcss";
 
 const config: Config = {
-  theme: {
-    fontFamily: {
-      sans: ["Georgia", "sans-serif"],
-      serif: ["Georgia", "serif"],
-      mono: ["Georgia", "monospace"],
-    },
-  },
+  // theme: {
+  //   fontFamily: {
+  //     sans: ["Georgia", "sans-serif"],
+  //     serif: ["Georgia", "serif"],
+  //     mono: ["Georgia", "monospace"],
+  //   },
+  // },
   content: [
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
