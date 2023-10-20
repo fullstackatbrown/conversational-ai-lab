@@ -23,11 +23,11 @@ function EditPost(props: { pid: string, postData: Post, onSave: (post: Post) => 
     }
 
     return (
-        <>
-            <input placeholder="Title" value={title} onChange={(e) => setTitle(e.target.value)} />
-            <input placeholder="Body" value={body} onChange={(e) => setBody(e.target.value)} />
+        <div>
+            <input placeholder="Title" value={title} onChange={(e) => setTitle(e.target.value)} /> <br></br>
+            <input placeholder="Body" value={body} onChange={(e) => setBody(e.target.value)} /> <br></br>
             <button onClick={handleSave}>Save</button>
-        </>
+        </div>
     );
 }
 
