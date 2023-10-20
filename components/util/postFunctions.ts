@@ -3,8 +3,8 @@ import { db } from "@/firebaseClient";
 import { collection, doc, getDoc, addDoc, updateDoc } from "firebase/firestore";
 import { dummyPost } from "./types";
 
-export const getPostData = async (id: string): Promise<Post> => {
-    const ref = doc(db, "posts", id);
+  export const getPostData = async (id: string): Promise<Post> => {
+    const ref = doc(db, "blogs", id);
     const docSnap = await getDoc(ref);
     if (docSnap.exists()) {
       return docSnap.data() as Post;
@@ -23,4 +23,11 @@ export const getPostData = async (id: string): Promise<Post> => {
       return ref.id;
   };
   
-  
+  export const updatePost = async (id: string, newPost: Post) => {
+    const ref = doc(db, "blogs", id);
+    const docSnap = await getDoc(ref);
+    await updateDoc(ref, {
+      ...newPost,
+      lastUpdated: new Date(),
+    });
+  }
