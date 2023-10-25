@@ -7,6 +7,9 @@ import { UserData, dummyUserData } from "../../components/util/types";
 import { getUserData, updateUserData } from "@/components/util/userDBFunctions";
 import { TextField } from "@mui/material"
 import { useRouter } from "next/navigation"
+import Navbar from "../../components/Navbar"
+import Image from "next/image"
+import photo from "../../public/assets/background.png"
 
 const EditProfile = (props: { uid: string }) => {
 
@@ -16,7 +19,10 @@ const EditProfile = (props: { uid: string }) => {
     const [lastName, setLastName] = useState<string>("");
     const [bio, setBio] = useState<string>("");
     const [userData, setUserData] = useState<UserData>(dummyUserData);
+    const [uid, setUid] = useState<string>("");
+    const [profileUrl, setProfileUrl] = useState<string>("");
 
+    const auth = getAuth(firebaseApp);
     const router = useRouter();
 
     useEffect(() => {
@@ -29,8 +35,10 @@ const EditProfile = (props: { uid: string }) => {
             if (userData.lastName) {
                 setLastName(userData.lastName);
             }
-            setEmail(userData.email)
+            setEmail(userData.email);
             setBio(userData.bio);
+            setUid(userData.uid);
+            setProfileUrl(userData.profileUrl);
         })
     }, [])
 
@@ -46,12 +54,23 @@ const EditProfile = (props: { uid: string }) => {
             console.log("saved!")
         })
     }
-
+    
+      async function handleSignOut() {
+        await auth.signOut();
+        setUid("");
+        setEmail("");
+        setProfileUrl("")
+      }
     return (
-        <div>
-            <h1 className="my-5 font-serif text-center text-2xl">Edit your Profile</h1>
-            <div className="flex flex-col gap-2 items-center">
-                <div>Email: {email}</div>
+        <div className="flex flex-col lg:h-[200vh] h-[200vh]">
+            <div className="sticky top-0 w-full">
+            <Navbar uid={uid} profileUrl={profileUrl} handleSignIn={() => (console.log("User Signed in"))} handleSignOut={() => handleSignOut()} />
+            </div>
+            <div> 
+                <Image className="w-full height:20" src={photo} alt="Background"/>
+            </div>
+            <div className="flex flex-col gap-2 items-center w-full">
+                <h1 className="my-5 font-serif text-center text-2xl">Edit your Profile</h1>
                 <TextField
                     id="outlined-basic"
                     label="Username"
@@ -86,7 +105,8 @@ const EditProfile = (props: { uid: string }) => {
                     value={bio}
                     onChange={(e) => setBio(e.target.value)}
                 />
-                <button onClick={onSubmission}>Submit</button>
+                <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+                onClick={onSubmission}>Save</button>
                 <button onClick={() => router.push("./")}>Back to Home</button>
             </div>
         </div>)
