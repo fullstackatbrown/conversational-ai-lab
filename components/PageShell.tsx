@@ -5,15 +5,15 @@ import { GoogleAuthProvider, getAuth, onAuthStateChanged, signInWithRedirect, ge
 import { firebaseApp } from '@/firebaseClient';
 import { createUserDBEntry } from '@/components/util/userDBFunctions';
 
-export default function PageShell(props: { children: React.ReactNode }) {
-    const [uid, setUid] = useState<string>("");
+export default function PageShell(props: { uid: string, setUid: (newUid: string) => void, children: React.ReactNode }) {
+    const uid = props.uid
     const [email, setEmail] = useState<string | null>(null);
     const [profileUrl, setProfileUrl] = useState<string>("");
 
     const auth = getAuth(firebaseApp)
     onAuthStateChanged(auth, async (user) => {
         if (user) {
-            setUid(user.uid);
+            props.setUid(user.uid);
             setEmail(user.email);
             setProfileUrl(user.photoURL ? user.photoURL : "");
             if (uid && email) {

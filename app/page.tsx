@@ -10,18 +10,15 @@ import { useRouter } from 'next/navigation'
 import PageShell from '@/components/PageShell'
 
 export default function HomePage() {
+  const [uid, setUid] = useState<string>("");
   return (
-    <PageShell>
+    <PageShell uid={uid} setUid={(newUid) => setUid(newUid)}>
       <Home />
     </PageShell>
   )
 }
 
 function Home() {
-  const [uid, setUid] = useState<string>("");
-  const [email, setEmail] = useState<string | null>(null);
-  const [profileUrl, setProfileUrl] = useState<string>("");
-
   const subText = ["Conversational ", "AI ", "Lab ", "at ", "Brown "]
   const [subTextIndex, setSubTextIndex] = useState<number>(0);
   const [titleSubText, setTitleSubtext] = useState<String>("")
