@@ -8,6 +8,15 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { firebaseApp } from "@/firebaseClient";
 import Image from "next/image";
 import Navbar from "@/components/Navbar";
+import PageShell from "@/components/PageShell";
+
+export default function BlogsPage() {
+    const [uid, setUid] = useState<string>("");
+    return (
+        <PageShell uid={uid} setUid={(newUid) => setUid(newUid)}>
+            < Blogs uid={uid} />
+        </PageShell>)
+}
 
 const Blogs = (props: { uid: string }) => {
     const [uid, setUid] = useState<string>("");
@@ -62,18 +71,3 @@ const Blogs = (props: { uid: string }) => {
     );
 }
 
-const BlogsPage = () => {
-    // get auth then call EditProfile
-    const [uid, setUid] = useState<string>("");
-    const auth = getAuth(firebaseApp);
-    onAuthStateChanged(auth, (user) => {
-        if (user) {
-            setUid(user.uid);
-        }
-    })
-    return (
-        <Blogs uid={uid} />
-    )
-}
-
-export default BlogsPage;
