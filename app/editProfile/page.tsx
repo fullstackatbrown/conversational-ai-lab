@@ -63,14 +63,15 @@ const EditProfile = (props: { uid: string }) => {
       }
     return (
         <div className="flex flex-col lg:h-[200vh] h-[200vh]">
-            <div className="sticky top-0 w-full">
+            <div className="sticky top-0 w-full z-10">
             <Navbar uid={uid} profileUrl={profileUrl} handleSignIn={() => (console.log("User Signed in"))} handleSignOut={() => handleSignOut()} />
             </div>
-            <div> 
-                <Image className="w-full height:20" src={photo} alt="Background"/>
+            <div className="bg-[#9A9A9A] flex flex-col items-center justify-center w-full h-[200px]">
+                <div className="text-left w-full ml-[200px]">
+                    <h1 className="lg:text-5xl text-2xl text-white">Edit Profile</h1>
+                </div>
             </div>
-            <div className="flex flex-col gap-2 items-center w-full">
-                <h1 className="my-5 font-serif text-center text-2xl">Edit your Profile</h1>
+            <div className="flex flex-col gap-2 items-center w-full pt-10">
                 <TextField
                     id="outlined-basic"
                     label="Username"
