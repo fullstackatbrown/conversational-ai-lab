@@ -62,7 +62,7 @@ export default function Navbar() {
                         className={({ isActive }) =>
                           classNames(
                             isActive
-                              ? "text-blue-700 hover:bg-gray-300 hover:text-blue-700"
+                              ? "text-[#ED1C24] underline hover:bg-gray-300 hover:text-[#ED1C24]" // would be better to define this globally
                               : "text-black hover:bg-gray-300 hover:text-black",
                             "rounded-md px-3 py-2 text-sm font-medium"
                           )
