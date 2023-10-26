@@ -7,32 +7,17 @@ import { GoogleAuthProvider, getAuth, onAuthStateChanged, signInWithRedirect, ge
 import { firebaseApp } from '@/firebaseClient';
 import { createUserDBEntry } from '@/components/util/userDBFunctions';
 import { useRouter } from 'next/navigation'
+import PageShell from '@/components/PageShell'
 
 export default function HomePage() {
-  const [uid, setUid] = useState<string>("");
-  const [email, setEmail] = useState<string | null>(null);
-  const [profileUrl, setProfileUrl] = useState<string>("");
-
-  const auth = getAuth(firebaseApp)
-
-  onAuthStateChanged(auth, async (user) => {
-    if (user) {
-      setUid(user.uid);
-      setEmail(user.email);
-      setProfileUrl(user.photoURL ? user.photoURL : "");
-      if (uid && email) {
-        await createUserDBEntry(uid, email, profileUrl);
-        console.log("User Signed in ");
-      } else {
-        console.log("User not signed in");
-      }
-    }
-  }
-  );
-  return <div>{uid ? (<Home uid={uid} email={email} profileUrl={profileUrl} />) : <div>Signing you in...</div>}</div>
+  return (
+    <PageShell>
+      <Home />
+    </PageShell>
+  )
 }
 
-function Home(props: { uid: string, email: string | null, profileUrl: string }) {
+function Home() {
   const [uid, setUid] = useState<string>("");
   const [email, setEmail] = useState<string | null>(null);
   const [profileUrl, setProfileUrl] = useState<string>("");
@@ -40,12 +25,6 @@ function Home(props: { uid: string, email: string | null, profileUrl: string }) 
   const subText = ["Conversational ", "AI ", "Lab ", "at ", "Brown "]
   const [subTextIndex, setSubTextIndex] = useState<number>(0);
   const [titleSubText, setTitleSubtext] = useState<String>("")
-
-  useEffect(() => {
-    setUid(props.uid);
-    setEmail(props.email);
-    setProfileUrl(props.profileUrl);
-  }, [])
 
   useEffect(() => {
     if (subTextIndex < subText.length) {
@@ -63,29 +42,8 @@ function Home(props: { uid: string, email: string | null, profileUrl: string }) 
     }
   }, [subTextIndex, subText]);
 
-
-  const auth = getAuth(firebaseApp)
-  const provider = new GoogleAuthProvider();
-
-  const router = useRouter();
-
-
-  async function handleSignIn() {
-    await signInWithRedirect(auth, provider);
-    const result = await getRedirectResult(auth);
-  }
-
-  async function handleSignOut() {
-    await auth.signOut();
-    setUid("");
-    setEmail("");
-  }
-
   return (
-    <div className="flex flex-col lg:h-[200vh] h-[200vh]">
-      <div className="sticky top-0 w-full">
-        <Navbar uid={uid} profileUrl={profileUrl} handleSignIn={() => handleSignIn()} handleSignOut={() => handleSignOut()} />
-      </div>
+    <div className="flex flex-col h-[185vh]">
       <div className="flex flex-row flex-1">
         <div className="flex-auto flex items-center w-8/12 ">
           <div className='px-[70px] mb-[100px] space-y-3'>

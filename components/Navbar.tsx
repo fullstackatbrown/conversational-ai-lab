@@ -16,7 +16,8 @@ const navigation = [
         href: "https://nextjs.org/learn/basics/navigate-between-pages/link-component",
         current: false,
     },
-    { name: "Blog", href: "#", current: false },
+    { name: "Forum", href: "#", current: false },
+    { name: "Blog", href: "/posts/", current: false },
 ];
 
 
