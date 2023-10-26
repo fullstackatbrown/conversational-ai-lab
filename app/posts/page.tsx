@@ -33,9 +33,14 @@ const Blogs = (props: { uid: string }) => {
 
     return (
         <div>
-            <h1 className="lg:text-5xl text-2xl text-center mt-4">Blogs</h1>
-            <div className="w-full text-right pr-[100px]">
-                <button className="transition-all duration-500 hover:gradient-to-l hover:from-blue-500 hover:to-purple-500 text-gray-200 rounded-lg text-lg bg-gradient-to-r from-purple-500 to-blue-500 font-bold p-3" onClick={handleCreate}>New Blog</button>
+            <div className="bg-[#9A9A9A] flex flex-col items-center justify-center w-full h-[200px]">
+                <div className="text-left w-full ml-[200px]">
+                    <h1 className="lg:text-5xl text-2xl text-white">Blog</h1>
+                </div>
+            </div>
+            <div className="w-full text-right pr-[100px] mt-10">
+                <button className="transition-all duration-500 hover:gradient-to-l hover:from-blue-500 hover:to-purple-500 text-gray-200 rounded-lg text-lg bg-gradient-to-r from-purple-500 to-blue-500 font-bold p-3"
+                    onClick={handleCreate}>New Blog</button>
             </div>
             <div className="mt-5 mx-10 p-10 flex flex-row gap-10">
                 <div className="flex-1 w-[50% h-full">
