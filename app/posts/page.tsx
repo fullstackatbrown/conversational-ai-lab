@@ -57,8 +57,8 @@ const Blogs = (props: { uid: string }) => {
     return (
         <div>
             <div className="bg-[#9A9A9A] flex flex-col items-center justify-center w-full h-[200px]">
-                <div className="text-left w-full px-[200px]">
-                    <h1 className="lg:text-5xl text-2xl text-white">Blog</h1>
+                <div className="text-left w-full px-10 lg:px-[150px]">
+                    <h1 className="lg:text-5xl text-4xl text-white">Blog</h1>
                 </div>
             </div>
             <div className="w-full text-right pr-[100px] mt-10">
