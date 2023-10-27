@@ -1,5 +1,3 @@
-Timeline: https://docs.google.com/document/d/1UrVp7gJvGA3bDH6744kfOFy3zQjJSyP6u-gqbyO7yXs/edit?usp=sharing
-
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
