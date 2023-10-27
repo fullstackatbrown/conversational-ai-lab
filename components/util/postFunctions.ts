@@ -20,7 +20,8 @@ import { QueryDocumentSnapshot } from "firebase/firestore";
         ...dummyBlog,
         uid: uid,
       });
-
+      // set the id of the post to the id of the document
+      await updatePost(ref.id, {...dummyBlog, id: ref.id, uid: uid});
       return ref.id;
   };
   

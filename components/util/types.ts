@@ -31,6 +31,7 @@ export const dummyUserData: UserData = {
 };
 
 export const dummyBlog : Post = {
+  id: "",
   uid: "",
   created: new Date(),
   lastUpdated: new Date(),
@@ -44,6 +45,7 @@ export const dummyBlog : Post = {
 }
 
 export const dummyPost: Post = {
+  id: "",
   uid: "",
   created: new Date(),
   lastUpdated: new Date(),
@@ -57,6 +59,7 @@ export const dummyPost: Post = {
 }
 
 export interface Post {
+  id: string;
   uid: string;
   created: Date;
   lastUpdated: Date;
