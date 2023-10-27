@@ -30,7 +30,8 @@ export const dummyUserData: UserData = {
   profileUrl: ""
 };
 
-export const dummyPost: Post = {
+export const dummyBlog : Post = {
+  id: "",
   uid: "",
   created: new Date(),
   lastUpdated: new Date(),
@@ -40,11 +41,25 @@ export const dummyPost: Post = {
   published: false,
   publishedOn: new Date(),
   publishedBy: "",
-  postType: "",
-  forumType: ""
+  postType: "blog",
+}
+
+export const dummyPost: Post = {
+  id: "",
+  uid: "",
+  created: new Date(),
+  lastUpdated: new Date(),
+  title: "",
+  textContent: "",
+  videoUrl: "",
+  published: false,
+  publishedOn: new Date(),
+  publishedBy: "",
+  postType: "Forum",
 }
 
 export interface Post {
+  id: string;
   uid: string;
   created: Date;
   lastUpdated: Date;

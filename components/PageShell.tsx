@@ -55,8 +55,8 @@ const Home = (props: { uid: string, email: string | null, profileUrl: string, ch
         setProfileUrl(props.profileUrl);
     }, [props.uid, props.email, props.profileUrl])
     return (
-        <div>
-            <div className="sticky top-0 w-full">
+        <div className="max-w-[100vw]">
+            <div className="sticky top-0 w-full z-50">
                 <Navbar uid={uid} profileUrl={profileUrl} handleSignIn={() => handleSignIn()} handleSignOut={() => handleSignOut()} />
             </div>
             {props.children}
