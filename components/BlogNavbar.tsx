@@ -1,5 +1,5 @@
 "use client";
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
@@ -7,22 +7,23 @@ import { NavLink } from "react-router-dom";
 
 import photo from "../public/assets/logo.png";
 
+// import components
+import ProfileMenu from "./ProfileMenu";
+import SignInButton from "./SignInButton";
+
 // placeholder links below for testing
 const navigation = [
-  { name: "About", href: "/", current: false },
-  {
-    name: "Our Team",
-    href: "/team",
-    current: false,
-  },
   { name: "Blog", href: "/blog", current: false },
+  { name: "Community Forum", href: "/forum", current: false },
 ];
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function Navbar() {
+export default function BlogNavbar() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
   return (
     // can change font by adding font (e.g. "font-serif") to className in next line
     <Disclosure as="nav" className="bg-gray-200 px-12">
@@ -74,9 +75,20 @@ export default function Navbar() {
                     ))}
                   </div>
                 </div>
+                <div>
+                  {isLoggedIn ? (
+                    <ProfileMenu />
+                  ) : (
+                    <SignInButton
+                      isLoggedIn={isLoggedIn}
+                      setIsLoggedIn={setIsLoggedIn}
+                    />
+                  )}
+                </div>
               </div>
             </div>
           </div>
+
           <Disclosure.Panel className="sm:hidden">
             <div className="space-y-1 px-2 pb-3 pt-2">
               {navigation.map((item) => (

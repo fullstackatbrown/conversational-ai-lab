@@ -9,11 +9,12 @@ import Blog from "./pages/Blog";
 
 // import components
 import Navbar from "../components/Navbar";
+import BlogNavbar from "../components/BlogNavbar";
 
 export default function Home() {
   return (
     <BrowserRouter>
-      <Navbar />
+      <BlogNavbar />
       <Routes>
         <Route path="/" element={<About />} />
         <Route path="/about" element={<About />} />
