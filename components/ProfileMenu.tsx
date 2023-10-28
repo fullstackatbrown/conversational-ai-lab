@@ -1,11 +1,17 @@
-import React, { Fragment } from "react";
+import React, { Dispatch, SetStateAction, Fragment } from "react";
 import { Menu, Transition } from "@headlessui/react";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function ProfileMenu() {
+export default function ProfileMenu({
+  isLoggedIn,
+  setIsLoggedIn,
+}: {
+  isLoggedIn: boolean;
+  setIsLoggedIn: Dispatch<SetStateAction<boolean>>;
+}) {
   return (
     <Menu as="div" className="relative ml-3">
       <div>
@@ -44,15 +50,15 @@ export default function ProfileMenu() {
           </Menu.Item>
           <Menu.Item>
             {({ active }) => (
-              <a
-                href="#"
+              <button
+                onClick={() => setIsLoggedIn(!isLoggedIn)}
                 className={classNames(
                   active ? "bg-gray-100" : "",
-                  "block px-4 py-2 text-sm text-gray-700"
+                  "block px-4 py-2 text-sm text-gray-700" // need to make span the entire width
                 )}
               >
                 Sign Out
-              </a>
+              </button>
             )}
           </Menu.Item>
         </Menu.Items>

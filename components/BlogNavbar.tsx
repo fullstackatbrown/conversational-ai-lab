@@ -77,7 +77,10 @@ export default function BlogNavbar() {
                 </div>
                 <div>
                   {isLoggedIn ? (
-                    <ProfileMenu />
+                    <ProfileMenu
+                      isLoggedIn={isLoggedIn}
+                      setIsLoggedIn={setIsLoggedIn}
+                    />
                   ) : (
                     <SignInButton
                       isLoggedIn={isLoggedIn}
