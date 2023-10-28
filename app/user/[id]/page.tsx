@@ -91,13 +91,13 @@ function Profile(props: { profId: string, uid: string }) {
                         ) : (
                             <div className="mb-[20px]">
                                 <input 
-                                    className = "w-[45%] border px-2 rounded mr-[0.5ch] p-0 outline-none inline-block text-gray-500"
+                                    className = "w-[45%] border-b mr-[0.5ch] p-0 outline-none inline-block text-gray-500"
                                     placeholder='First Name' 
                                     value={firstName} 
                                     onChange={(e) => setFirstName(e.target.value)}
                                 />
                                 <input 
-                                    className = "w-[45%] border px-2 rounded p-0 outline-none inline-block text-gray-500"
+                                    className = "w-[45%] border-b p-0 outline-none inline-block text-gray-500"
                                     value={lastName}
                                     placeholder='Last Name'
                                     onChange={(e) => setLastName(e.target.value)}
