@@ -10,7 +10,8 @@ export interface UserData {
   userName: string;
   firstName?: string;
   lastName?: string;
-  bio: string;
+  bio?: string;
+  pronouns?: string;
   role: UserRole;
   postIds: string[];
   // future fields:
