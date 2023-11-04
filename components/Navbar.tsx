@@ -34,6 +34,7 @@ interface NavbarProps {
 
 export default function Navbar({ uid, profileUrl, handleSignIn, handleSignOut }: NavbarProps) {
     const router = useRouter();
+
     return (
         // can change font by adding font (e.g. "font-serif") to className in next line
         <Disclosure as="nav" className="bg-gray-200 px-12">

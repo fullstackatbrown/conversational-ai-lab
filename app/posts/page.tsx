@@ -90,10 +90,9 @@ const Blogs = (props: { uid: string }) => {
                     <h1 className="lg:text-5xl text-2xl text-white">Blog</h1>
                 </div>
             </div>
-            <div className="w-full text-right pr-[100px] mt-10">
-                <button className="transition-all duration-500 hover:gradient-to-l mb-6 hover:from-blue-500 hover:to-purple-500 text-gray-200 rounded-lg text-lg bg-gradient-to-r from-purple-500 to-blue-500 font-bold p-3"
-                    onClick={handleCreate}>New Blog</button>
-            </div>
+                { uid ? (
+                <div className="w-full text-right pr-[100px] mt-10"><button className="transition-all duration-500 hover:gradient-to-l mb-6 hover:from-blue-500 hover:to-purple-500 text-gray-200 rounded-lg text-lg bg-gradient-to-r from-purple-500 to-blue-500 font-bold p-3"onClick={handleCreate}>New Blog</button></div>
+                ) : null}
             <hr className="h-px mx-10 mt-3 bg-gray-300 border-0" />
             {currentPosts.map((el, i) => {
                 return (
