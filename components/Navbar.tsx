@@ -92,7 +92,7 @@ export default function Navbar({ uid, profileUrl, handleSignIn, handleSignOut }:
                                             <span className="sr-only">Open user menu</span>
                                             <img
                                                 className="h-8 w-8 rounded-full"
-                                                rel="noreferrer noopener"
+                                                referrerPolicy="no-referrer"
                                                 src={profileUrl}
                                                 alt=""
                                             />
