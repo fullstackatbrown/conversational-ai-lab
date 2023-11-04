@@ -34,7 +34,7 @@ import { QueryDocumentSnapshot } from "firebase/firestore";
     });
   }
 
-  export const getNPosts = async(pageSize: number, lastDocumentSnapShot? : QueryDocumentSnapshot) =>{
+  export const getNPosts = async(pageSize: number, lastDocumentSnapShot : QueryDocumentSnapshot | null) =>{
     const collectionRef = collection(db, "posts");
 
     const queryConditions = [
