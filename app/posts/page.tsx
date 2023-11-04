@@ -26,7 +26,6 @@ const Blogs = (props: { uid: string }) => {
     const [userData, setUserData] = useState<UserData>(dummyUserData);
     const [lastSnapShot, setLastDocumentSnapShot] = useState<QueryDocumentSnapshot | null>(null);
     const [currentPosts, setCurrentPosts] = useState<DocumentData[]>([]);
-    const [isLoadMoreDisabled, setLoadMoreDisabled] = useState(false);
     const router = useRouter();
 
 
@@ -44,18 +43,18 @@ const Blogs = (props: { uid: string }) => {
 
     useEffect(() => {
         getNPosts(5, null).then((posts) => {
+            if (lastSnapShot) {
+                const btn = document.getElementById("btn") as HTMLButtonElement;
+                btn.style.display = "none";
+                btn.disabled = true;
+                
+            }
             if (posts) {
                 setCurrentPosts(posts.documents);
                 if (posts.lastDocumentSnapShot) {
-                    // const snapshot = posts.lastDocumentSnapShot
                     setLastDocumentSnapShot(posts.lastDocumentSnapShot);
                 }
             } 
-            if (lastSnapShot) {
-                setLoadMoreDisabled(true);
-                console.log("disabled?", isLoadMoreDisabled);
-                
-            }
         })
     }, [])
 
@@ -67,18 +66,20 @@ const Blogs = (props: { uid: string }) => {
     const handleLoadMore = async () => {
         console.log('Click load more')
         getNPosts(5, lastSnapShot).then((posts) => {
-            if (posts) {
+            if (lastSnapShot == null) {
+                const btn = document.getElementById("btn") as HTMLButtonElement; 
+                btn.style.display = "none";
+                btn.disabled = true;
+            } else if (posts) {
+            
                 for(const data of posts.documents) {
                     currentPosts.push(data);
                 }
                 setCurrentPosts(currentPosts);
                 setLastDocumentSnapShot(posts.lastDocumentSnapShot);
-            } 
-            if (lastSnapShot == null) {
-                setLoadMoreDisabled(true);
-                console.log("disabled?", isLoadMoreDisabled);
-                (document.getElementById("btn") as HTMLButtonElement).disabled = true;
-            }
+                console.log("last snapshot", lastSnapShot);
+            
+        }
         })
     }
     
@@ -105,7 +106,7 @@ const Blogs = (props: { uid: string }) => {
             <div className="flex flex-col items-center justify-center w-full">
             
                 <button id="btn" className="relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-purple-600 to-blue-500 group-hover:from-purple-600 group-hover:to-blue-500 hover:text-white dark:text-white">
-                <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0" onClick={handleLoadMore} aria-disabled={isLoadMoreDisabled}>
+                <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0" onClick={handleLoadMore}>
                     Load more
                 </span>
                 </button>
