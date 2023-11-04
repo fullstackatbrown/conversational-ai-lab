@@ -26,6 +26,7 @@ const Blogs = (props: { uid: string }) => {
     const [userData, setUserData] = useState<UserData>(dummyUserData);
     const [lastSnapShot, setLastDocumentSnapShot] = useState<QueryDocumentSnapshot | null>(null);
     const [currentPosts, setCurrentPosts] = useState<DocumentData[]>([]);
+    const [postCount, setPostCount] = useState<number>(0);
     const router = useRouter();
 
 
@@ -47,10 +48,10 @@ const Blogs = (props: { uid: string }) => {
                 const btn = document.getElementById("btn") as HTMLButtonElement;
                 btn.style.display = "none";
                 btn.disabled = true;
-                
             }
             if (posts) {
                 setCurrentPosts(posts.documents);
+                setPostCount(posts.queriesCount);
                 if (posts.lastDocumentSnapShot) {
                     setLastDocumentSnapShot(posts.lastDocumentSnapShot);
                 }
@@ -66,19 +67,21 @@ const Blogs = (props: { uid: string }) => {
     const handleLoadMore = async () => {
         console.log('Click load more')
         getNPosts(5, lastSnapShot).then((posts) => {
-            if (lastSnapShot == null) {
+            console.log("number of posts",postCount);
+            if (postCount < 10) {
                 const btn = document.getElementById("btn") as HTMLButtonElement; 
                 btn.style.display = "none";
                 btn.disabled = true;
-            } else if (posts) {
+            } 
+            if (posts) {
             
                 for(const data of posts.documents) {
                     currentPosts.push(data);
                 }
                 setCurrentPosts(currentPosts);
+                setPostCount(postCount - 5);
                 setLastDocumentSnapShot(posts.lastDocumentSnapShot);
                 console.log("last snapshot", lastSnapShot);
-            
         }
         })
     }
