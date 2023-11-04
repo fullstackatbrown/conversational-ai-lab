@@ -111,13 +111,13 @@ export default function Navbar({ uid, profileUrl, handleSignIn, handleSignOut }:
                                             <Menu.Item>
                                                 {({ active }) => (
                                                     <button
-                                                        onClick={() => router.push("/editProfile")}
+                                                        onClick={() => router.push(`/user/${uid}`)}
                                                         className={classNames(
                                                             active ? "bg-gray-100" : "",
                                                             "w-full text-left block px-4 py-2 text-sm text-gray-700"
                                                         )}
                                                     >
-                                                        Edit Profile
+                                                        View Profile
                                                     </button>
                                                 )}
                                             </Menu.Item>
