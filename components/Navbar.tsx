@@ -56,7 +56,8 @@ export default function Navbar({ uid, profileUrl, handleSignIn, handleSignOut }:
                                 </Disclosure.Button>
                             </div>
                             <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
-                                <div className="flex flex-shrink-0 items-center">
+                                <div className="flex flex-shrink-0 items-center cursor-pointer"
+                                    onClick={() => router.push("./")}>
                                     <Image
                                         className="h-44 w-auto py-5"
                                         src={photo}
@@ -92,7 +93,7 @@ export default function Navbar({ uid, profileUrl, handleSignIn, handleSignOut }:
                                             <span className="sr-only">Open user menu</span>
                                             <img
                                                 className="h-8 w-8 rounded-full"
-                                                rel="noreferrer noopener"
+                                                referrerPolicy="no-referrer"
                                                 src={profileUrl}
                                                 alt=""
                                             />
@@ -111,13 +112,13 @@ export default function Navbar({ uid, profileUrl, handleSignIn, handleSignOut }:
                                             <Menu.Item>
                                                 {({ active }) => (
                                                     <button
-                                                        onClick={() => router.push("/editProfile")}
+                                                        onClick={() => router.push(`/user/${uid}`)}
                                                         className={classNames(
                                                             active ? "bg-gray-100" : "",
                                                             "w-full text-left block px-4 py-2 text-sm text-gray-700"
                                                         )}
                                                     >
-                                                        Edit Profile
+                                                        View Profile
                                                     </button>
                                                 )}
                                             </Menu.Item>
