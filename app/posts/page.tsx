@@ -26,6 +26,7 @@ const Blogs = (props: { uid: string }) => {
     const [userData, setUserData] = useState<UserData>(dummyUserData);
     const [lastSnapShot, setLastDocumentSnapShot] = useState<QueryDocumentSnapshot | null>(null);
     const [currentPosts, setCurrentPosts] = useState<DocumentData[]>([]);
+    const [isMore, setIsMore] = useState<boolean>(true);
     const router = useRouter();
 
 
@@ -47,14 +48,14 @@ const Blogs = (props: { uid: string }) => {
                 const btn = document.getElementById("btn") as HTMLButtonElement;
                 btn.style.display = "none";
                 btn.disabled = true;
-                
+
             }
             if (posts) {
                 setCurrentPosts(posts.documents);
                 if (posts.lastDocumentSnapShot) {
                     setLastDocumentSnapShot(posts.lastDocumentSnapShot);
                 }
-            } 
+            }
         })
     }, [])
 
@@ -67,22 +68,20 @@ const Blogs = (props: { uid: string }) => {
         console.log('Click load more')
         getNPosts(5, lastSnapShot).then((posts) => {
             if (lastSnapShot == null) {
-                const btn = document.getElementById("btn") as HTMLButtonElement; 
-                btn.style.display = "none";
-                btn.disabled = true;
+                setIsMore(false);
             } else if (posts) {
-            
-                for(const data of posts.documents) {
+
+                for (const data of posts.documents) {
                     currentPosts.push(data);
                 }
                 setCurrentPosts(currentPosts);
                 setLastDocumentSnapShot(posts.lastDocumentSnapShot);
                 console.log("last snapshot", lastSnapShot);
-            
-        }
+
+            }
         })
     }
-    
+
     return (
         <div>
             <div className="bg-[#9A9A9A] flex flex-col items-center justify-center w-full h-[200px]">
@@ -91,8 +90,15 @@ const Blogs = (props: { uid: string }) => {
                 </div>
             </div>
             <div className="w-full text-right pr-[100px] mt-10">
-                <button className="transition-all duration-500 hover:gradient-to-l mb-6 hover:from-blue-500 hover:to-purple-500 text-gray-200 rounded-lg text-lg bg-gradient-to-r from-purple-500 to-blue-500 font-bold p-3"
-                    onClick={handleCreate}>New Blog</button>
+                <button className="rounded-full lg:rounded-none text-white transition-all duration-500 font-bold px-3 lg:py-3 py-1 bg-[#AE2C27]"
+                    onClick={handleCreate}>
+                    <div className="flex flex-row lg:gap-2 items-center justify-center">
+                        <div className="md:w-full md:scale-100 scale-0 w-0 pt-[0.1rem]">
+                            Create Post
+                        </div>
+                        <img src="/assets/add-post.svg" />
+                    </div>
+                </button>
             </div>
             <hr className="h-px mx-10 mt-3 bg-gray-300 border-0" />
             {currentPosts.map((el, i) => {
@@ -104,13 +110,18 @@ const Blogs = (props: { uid: string }) => {
                 )
             })}
             <div className="flex flex-col items-center justify-center w-full">
-            
-                <button id="btn" className="relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-purple-600 to-blue-500 group-hover:from-purple-600 group-hover:to-blue-500 hover:text-white dark:text-white">
-                <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0" onClick={handleLoadMore}>
-                    Load more
-                </span>
-                </button>
-            
+                {isMore ? (
+                    <button id="btn" className="relative inline-flex items-center justify-center py-0.5 px-10 mb-2 mr-2 overflow-hidden text-sm font-bold text-gray-600 rounded-lg bg-gray-200">
+                        <span className="relative px-5 py-2.5" onClick={handleLoadMore}>
+                            Load More
+                        </span>
+                    </button>
+                ) : (
+                    <p>
+                        You have reached the end!
+                    </p>
+                )
+                }
             </div>
         </div>
     );
