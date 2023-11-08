@@ -26,6 +26,7 @@ const Blogs = (props: { uid: string }) => {
     const [userData, setUserData] = useState<UserData>(dummyUserData);
     const [lastSnapShot, setLastDocumentSnapShot] = useState<QueryDocumentSnapshot | null>(null);
     const [currentPosts, setCurrentPosts] = useState<DocumentData[]>([]);
+    const [postCount, setPostCount] = useState<number>(0);
     const [isMore, setIsMore] = useState<boolean>(true);
     const router = useRouter();
 
@@ -52,6 +53,7 @@ const Blogs = (props: { uid: string }) => {
             }
             if (posts) {
                 setCurrentPosts(posts.documents);
+                setPostCount(posts.queriesCount);
                 if (posts.lastDocumentSnapShot) {
                     setLastDocumentSnapShot(posts.lastDocumentSnapShot);
                 }
@@ -75,6 +77,7 @@ const Blogs = (props: { uid: string }) => {
                     currentPosts.push(data);
                 }
                 setCurrentPosts(currentPosts);
+                setPostCount(postCount - 5);
                 setLastDocumentSnapShot(posts.lastDocumentSnapShot);
                 console.log("last snapshot", lastSnapShot);
 

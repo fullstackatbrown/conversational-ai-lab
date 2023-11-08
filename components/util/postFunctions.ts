@@ -1,6 +1,6 @@
 import { Post } from "./types";
 import { db } from "@/firebaseClient";
-import { collection, doc, getDoc, addDoc, updateDoc, query, where, orderBy, limit, startAfter, getDocs } from "firebase/firestore";
+import { collection, doc, getDoc, addDoc, updateDoc, query, where, orderBy, limit, startAfter, getDocs, getCountFromServer } from "firebase/firestore";
 import { dummyPost, dummyBlog } from "./types";
 import { QueryDocumentSnapshot } from "firebase/firestore";
 
@@ -46,6 +46,7 @@ import { QueryDocumentSnapshot } from "firebase/firestore";
       //@ts-ignore
       queryConditions.push(startAfter(lastDocumentSnapShot))
     }
+    const queriesCount = await getCountFromServer(query(collectionRef, where("postType", "==", "blog")));
     let q = query(collectionRef, ...queryConditions);
     try{
       const querySnapshot = await getDocs(q);
@@ -55,6 +56,7 @@ import { QueryDocumentSnapshot } from "firebase/firestore";
         return {
           documents: [],
           lastDocumentSnapShot: null,
+          queriesCount: 0,
         };
       } else {
         const documents = querySnapshot.docs.map((doc) => doc.data());
@@ -62,6 +64,7 @@ import { QueryDocumentSnapshot } from "firebase/firestore";
         return {
           documents,
           lastDocumentSnapShot: newLastDocumentSnapShot,
+          queriesCount: queriesCount.data().count,
         };
       }
     } catch (error) {
@@ -69,6 +72,7 @@ import { QueryDocumentSnapshot } from "firebase/firestore";
       return {
         documents: [],
         lastDocumentSnapShot: null,
+        queriesCount: 0,
       };
     }
 
