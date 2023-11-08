@@ -2,11 +2,15 @@ export type UserRole = "admin" | "writer" | "reader";
 export type PostType = "blog" | "forum";
 export type ForumType = "announcement" | "question";
 
+import { Timestamp } from "firebase/firestore/lite";
+
+const dateNow = new Date(Date.now()).toDateString()
+
 export interface UserData {
   uid: string;
   email: string;
-  joined: Date;
-  lastLogin: Date;
+  joined: string;
+  lastLogin: string;
   userName: string;
   firstName?: string;
   lastName?: string;
@@ -22,8 +26,8 @@ export interface UserData {
 export const dummyUserData: UserData = {
   uid: "",
   email: "",
-  joined: new Date(),
-  lastLogin: new Date(),
+  joined: dateNow,
+  lastLogin: dateNow,
   userName: "",
   bio: "",
   role: "reader" as UserRole,
@@ -34,13 +38,13 @@ export const dummyUserData: UserData = {
 export const dummyBlog : Post = {
   id: "",
   uid: "",
-  created: new Date(),
-  lastUpdated: new Date(),
+  created: dateNow,
+  lastUpdated: dateNow,
   title: "",
   textContent: "",
   videoUrl: "",
   published: false,
-  publishedOn: new Date(),
+  publishedOn: dateNow,
   publishedBy: "",
   postType: "blog",
 }
@@ -48,27 +52,27 @@ export const dummyBlog : Post = {
 export const dummyPost: Post = {
   id: "",
   uid: "",
-  created: new Date(),
-  lastUpdated: new Date(),
+  created: dateNow,
+  lastUpdated: dateNow,
   title: "",
   textContent: "",
   videoUrl: "",
   published: false,
-  publishedOn: new Date(),
+  publishedOn: dateNow,
   publishedBy: "",
-  postType: "Forum",
+  postType: "forum",
 }
 
 export interface Post {
   id: string;
   uid: string;
-  created: Date;
-  lastUpdated: Date;
+  created: string;
+  lastUpdated: string;
   title: string;
   textContent: string;
   videoUrl?: string;
   published: boolean;
-  publishedOn?: Date;
+  publishedOn?: string;
   publishedBy?: string;
   postType: string;
   forumType?: string;
@@ -77,8 +81,8 @@ export interface Post {
 export interface CommentMetaData {
   id: string;
   authorUid: string;
-  created: Date;
-  lastUpdated: Date;
+  created: Timestamp;
+  lastUpdated: Timestamp;
   edited: boolean;
   likes: number;
   replies: CommentMetaData[];

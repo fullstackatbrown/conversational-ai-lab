@@ -3,6 +3,7 @@ import { db } from "@/firebaseClient";
 import { collection, doc, getDoc, addDoc, updateDoc, query, where, orderBy, limit, startAfter, getDocs, getCountFromServer } from "firebase/firestore";
 import { dummyPost, dummyBlog } from "./types";
 import { QueryDocumentSnapshot } from "firebase/firestore";
+import { Timestamp } from "firebase/firestore";
 
   export const getPostData = async (id: string): Promise<Post> => {
     const ref = doc(db, "posts", id);
@@ -30,7 +31,7 @@ import { QueryDocumentSnapshot } from "firebase/firestore";
     const docSnap = await getDoc(ref);
     await updateDoc(ref, {
       ...newPost,
-      lastUpdated: new Date(),
+      lastUpdated: Timestamp.now(),
     });
   }
 

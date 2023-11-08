@@ -2,8 +2,10 @@
 import { firebaseApp } from '@/firebaseClient';
 import { useState, useEffect } from 'react';
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { Post, dummyPost } from '@/components/util/types';
+import { Post, UserData, dummyPost, dummyUserData } from '@/components/util/types';
 import { getPostData, updatePost } from '@/components/util/postFunctions';
+import PageShell from '@/components/PageShell';
+import { getUserData } from '@/components/util/userDBFunctions';
 
 function EditPost(props: { pid: string, postData: Post, onSave: (post: Post) => void }) {
     const postData = props.postData;
@@ -22,21 +24,50 @@ function EditPost(props: { pid: string, postData: Post, onSave: (post: Post) => 
         }
     }
 
+    
+}
+
+interface PostDataProps {
+    postData: Post,
+    authorData: UserData
+}
+
+const PostData = ({ postData, authorData }: PostDataProps) => {
+    const published = new Date(postData.created);
+
     return (
-        <div>
-            <input placeholder="Title" value={title} onChange={(e) => setTitle(e.target.value)} /> <br></br>
-            <input placeholder="Body" value={body} onChange={(e) => setBody(e.target.value)} /> <br></br>
-            <button onClick={handleSave}>Save</button>
+        <>
+        <div className="flex flex-row gap-4">
+            <img className="h-[59px] w-[59x] rounded-full" referrerPolicy="no-referrer" src={authorData.profileUrl} alt="" />
+            <div className="flex flex-col">
+                <h2 className="mt-1 text-lg font-semibold">
+                    {authorData.firstName ? authorData.firstName + " " + authorData.lastName : authorData.userName}
+                </h2>
+                <h2 className="m-0 text-base text-[#6c6c6c]">
+                    PhD, NBA MVP, 7x Champion | {authorData.role}
+                </h2>
+            </div>
         </div>
+        <hr className="w-full h-1 mt-[21px]"/>
+        <div className="flex flex-row justify-between my-[14px] mx-[60px]">
+            <p className="my-0 text-base text-[#6c6c6c]">{published.toDateString()}</p>
+            <div>Comment</div>
+        </div>
+        <hr className="w-full h-1"/>
+        </>
     );
 }
 
 function PostAuthed(props: { pid: string, uid: string }) {
     const [uid, setUid] = useState<string>(props.uid);
     const [postData, setPostData] = useState<Post>(dummyPost);
+    const [authorData, setAuthorData] = useState<UserData>(dummyUserData);
     const [editable, setEditable] = useState<boolean>(false);
     const [editMode, setEditMode] = useState<boolean>(false);
     const auth = getAuth(firebaseApp);
+
+    const [title, setTitle] = useState<string>("");
+    const [body, setBody] = useState<string>("");
 
     useEffect(() => {
         setUid(props.uid);
@@ -46,6 +77,11 @@ function PostAuthed(props: { pid: string, uid: string }) {
     useEffect(() => {
         getPostData(props.pid).then((data: Post) => {
             setPostData(data);
+            setTitle(data.title);
+            setBody(data.textContent);
+            getUserData(data.uid).then((userData: UserData) => {
+                setAuthorData(userData);
+            });
             if (data.uid == uid) {
                 console.log(data.uid)
                 setEditable(true);
@@ -53,35 +89,51 @@ function PostAuthed(props: { pid: string, uid: string }) {
         });
     }, [uid]);
 
-    const handleSave = (newPost: Post) => {
+    const handleSave = () => {
         setEditMode(false);
-        updatePost(props.pid, newPost);
+        const updatedPost = {
+            ...postData,
+            title: title,
+            textContent: body
+        }
+        updatePost(props.pid, updatedPost);
     }
 
     return (
-        editMode ? (
-            <EditPost pid={props.pid} postData={postData} onSave={handleSave} />
-        ) : (
-            <div>
-                <h1>{postData.title}</h1>
-                <p>{postData.textContent}</p>
-                {editable ? <button onClick={() => setEditMode(true)}>Edit</button> : null}
+        <div className="mx-[138px]">
+            {editable ? (
+                <div 
+                    className={`p-10 bg-[#b9b9b9] rounded-lg text-xl mt-[32px] ml-auto font-bold cursor-pointer`}
+                    onClick={() => {editMode ? handleSave() : setEditMode(true)}}
+                >
+                    {editMode ? "Save" : "Edit Post"}
+                </div>
+            ) : (
+                null
+            )
+            }    
+            <div className="mt-[128px] mb-[58px]">
+                <h1 className="my-0 text-4xl font-bold">{title}</h1>
             </div>
-        )
+            <PostData postData={postData} authorData={authorData}/>
+            {editMode ? (
+                <textarea className="resize-none" placeholder="Body..." onChange={(e) => setBody(e.target.value)}/>
+            ) : (
+                <div className="mt-[77px]">
+                    {body}
+                </div>
+            )
+            }
+        </div>
     );
 }
 
 export default function Post({ params }: { params: { id: string } }) {
     const [uid, setUid] = useState<string>("");
-    const auth = getAuth(firebaseApp);
-    onAuthStateChanged(auth, (user) => {
-        if (user) {
-            setUid(user.uid);
-        }
-    })
+
     return (
-        <div>
-            {<PostAuthed uid={uid} pid={params.id} />}
-        </ div>
+        <PageShell uid={uid} setUid={(uid) => setUid(uid)}>
+            {<PostAuthed uid={uid} pid={params.id}/>}
+        </PageShell>
     )
 }
