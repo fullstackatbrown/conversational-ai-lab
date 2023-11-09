@@ -67,12 +67,10 @@ const Blogs = (props: { uid: string }) => {
     }
 
     const handleLoadMore = async () => {
-        console.log('Click load more')
         getNPosts(5, lastSnapShot).then((posts) => {
-            if (lastSnapShot == null) {
+            if (lastSnapShot === null) {
                 setIsMore(false);
             } else if (posts) {
-
                 for (const data of posts.documents) {
                     currentPosts.push(data);
                 }
@@ -80,7 +78,14 @@ const Blogs = (props: { uid: string }) => {
                 setPostCount(postCount - 5);
                 setLastDocumentSnapShot(posts.lastDocumentSnapShot);
                 console.log("last snapshot", lastSnapShot);
-
+                // run it again to see if we're at the end
+                getNPosts(5, lastSnapShot).then((posts) => {
+                    if (posts) {
+                        if (posts.lastDocumentSnapShot === null) {
+                            setIsMore(false);
+                        }
+                    }
+                })
             }
         })
     }
@@ -120,7 +125,7 @@ const Blogs = (props: { uid: string }) => {
                         </span>
                     </button>
                 ) : (
-                    <p>
+                    <p className="mb-2">
                         You have reached the end!
                     </p>
                 )
@@ -154,12 +159,13 @@ const BlogComponent = ({ blog }: BlogComponentProps) => {
     return (
         <div className="mt-5 mx-10 p-10 md:flex gap-10">
             <div className="flex-1 h-full">
-                <h1 className="mb-2 lg:text-4xl text-3xl text-left">
+                <h1 className="mb-2 font-semibold lg:text-4xl text-3xl text-left">
                     {titleSummary}
                 </h1>
                 <p className="text-lg mb-1">By
                     <span className="font-bold">{" " + userName + " "}</span>
-                    <span>2 weeks ago</span>
+                    <span> | </span>
+                    <span>{blog.created}</span>
                 </p>
                 <p className="overflow-y-auto">
                     {blogSummary}
