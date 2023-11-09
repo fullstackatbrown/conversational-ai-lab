@@ -91,47 +91,52 @@ const Blogs = (props: { uid: string }) => {
     }
 
     return (
-        <div>
-            <div className="bg-[#9A9A9A] flex flex-col items-center justify-center w-full h-[200px]">
-                <div className="text-left w-full px-10 lg:px-[150px]">
-                    <h1 className="lg:text-5xl text-4xl text-white">Blog</h1>
-                </div>
-            </div>
-            <div className="w-full text-right pr-[100px] mt-10">
-                <button className="rounded-full lg:rounded-none text-white transition-all duration-500 font-bold px-3 lg:py-3 py-1 bg-[#AE2C27]"
-                    onClick={handleCreate}>
-                    <div className="flex flex-row lg:gap-2 items-center justify-center">
-                        <div className="md:w-full md:scale-100 scale-0 w-0 pt-[0.1rem]">
-                            Create Post
-                        </div>
-                        <img src="/assets/add-post.svg" />
-                    </div>
-                </button>
-            </div>
-            <hr className="h-px mx-10 mt-3 bg-gray-300 border-0" />
-            {currentPosts.map((el, i) => {
-                return (
-                    <div key={i}>
-                        <BlogComponent blog={el} />
-                        <hr className="h-px mx-10 my-3 bg-gray-300 border-0" />
-                    </div>
-                )
-            })}
-            <div className="flex flex-col items-center justify-center w-full">
-                {isMore ? (
-                    <button id="btn" className="relative inline-flex items-center justify-center py-0.5 px-10 mb-2 mr-2 overflow-hidden text-sm font-bold text-gray-600 rounded-lg bg-gray-200">
-                        <span className="relative px-5 py-2.5" onClick={handleLoadMore}>
-                            Load More
-                        </span>
-                    </button>
-                ) : (
-                    <p className="mb-2">
-                        You have reached the end!
-                    </p>
-                )
-                }
-            </div>
+      <div>
+        <div className="bg-[#9A9A9A] flex flex-col items-center justify-center w-full h-[200px]">
+          <div className="text-left w-full px-10 lg:px-[150px]">
+            <h1 className="lg:text-5xl text-4xl text-white">Blog</h1>
+          </div>
         </div>
+        {uid ? (
+          <div className="w-full text-right pr-[100px] mt-10">
+            <button
+              className="rounded-full lg:rounded-none text-white transition-all duration-500 font-bold px-3 lg:py-3 py-1 bg-[#AE2C27]"
+              onClick={handleCreate}
+            >
+              <div className="flex flex-row lg:gap-2 items-center justify-center">
+                <div className="md:w-full md:scale-100 scale-0 w-0 pt-[0.1rem]">
+                  Create Post
+                </div>
+                <img src="/assets/add-post.svg" />
+              </div>
+            </button>
+          </div>
+        ) : null}
+
+        <hr className="h-px mx-10 mt-3 bg-gray-300 border-0" />
+        {currentPosts.map((el, i) => {
+          return (
+            <div key={i}>
+              <BlogComponent blog={el} />
+              <hr className="h-px mx-10 my-3 bg-gray-300 border-0" />
+            </div>
+          );
+        })}
+        <div className="flex flex-col items-center justify-center w-full">
+          {isMore ? (
+            <button
+              id="btn"
+              className="relative inline-flex items-center justify-center py-0.5 px-10 mb-2 mr-2 overflow-hidden text-sm font-bold text-gray-600 rounded-lg bg-gray-200"
+            >
+              <span className="relative px-5 py-2.5" onClick={handleLoadMore}>
+                Load More
+              </span>
+            </button>
+          ) : (
+            <p className="mb-2">You have reached the end!</p>
+          )}
+        </div>
+      </div>
     );
 }
 interface BlogComponentProps {
