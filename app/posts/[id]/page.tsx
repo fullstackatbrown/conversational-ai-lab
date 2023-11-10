@@ -6,6 +6,8 @@ import { Post, UserData, dummyPost, dummyUserData } from '@/components/util/type
 import { getPostData, updatePost } from '@/components/util/postFunctions';
 import PageShell from '@/components/PageShell';
 import { getUserData } from '@/components/util/userDBFunctions';
+import { ChevronLeftIcon } from '@heroicons/react/24/outline';
+import { useRouter } from 'next/navigation';
 
 import { useEditor, EditorContent } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
@@ -27,7 +29,7 @@ function EditPost(props: { pid: string, postData: Post, onSave: (post: Post) => 
         }
     }
 
-    
+
 }
 
 interface PostDataProps {
@@ -40,23 +42,23 @@ const PostData = ({ postData, authorData }: PostDataProps) => {
 
     return (
         <>
-        <div className="flex flex-row gap-4">
-            <img className="h-[59px] w-[59x] rounded-full" referrerPolicy="no-referrer" src={authorData.profileUrl} alt="" />
-            <div className="flex flex-col">
-                <h2 className="mt-1 text-lg font-semibold">
-                    {authorData.firstName ? authorData.firstName + " " + authorData.lastName : authorData.userName}
-                </h2>
-                <h2 className="m-0 text-base text-[#6c6c6c]">
-                    PhD, NBA MVP, 7x Champion | {authorData.role}
-                </h2>
+            <div className="flex flex-row gap-4">
+                <img className="h-[59px] w-[59x] rounded-full" referrerPolicy="no-referrer" src={authorData.profileUrl} alt="" />
+                <div className="flex flex-col">
+                    <h2 className="mt-1 text-lg font-semibold">
+                        {authorData.firstName ? authorData.firstName + " " + authorData.lastName : authorData.userName}
+                    </h2>
+                    <h2 className="m-0 text-base text-[#6c6c6c]">
+                        PhD, NBA MVP, 7x Champion | {authorData.role}
+                    </h2>
+                </div>
             </div>
-        </div>
-        <hr className="w-full h-1 mt-[21px]"/>
-        <div className="flex flex-row justify-between my-[14px] mx-[60px]">
-            <p className="my-0 text-base text-[#6c6c6c]">{published.toDateString()}</p>
-            <div>Comment</div>
-        </div>
-        <hr className="w-full h-1"/>
+            <hr className="w-full h-1 mt-[21px]" />
+            <div className="flex flex-row justify-between my-[14px] mx-[60px]">
+                <p className="my-0 text-base text-[#6c6c6c]">{published.toDateString()}</p>
+                <div>Comment</div>
+            </div>
+            <hr className="w-full h-1" />
         </>
     );
 }
@@ -115,25 +117,53 @@ function PostAuthed(props: { pid: string, uid: string }) {
         updatePost(props.pid, updatedPost);
     }
 
+    const router = useRouter();
     return (
         <div className="mx-[138px]">
+            <div className=" flex items-center mt-3 cursor-pointer"
+                onClick={() => router.push("../")}>
+                <ChevronLeftIcon className="h-6 w-6" />
+                <p>
+                    Back to posts
+                </p>
+            </div>
             {editable ? (
-                <div 
+                <div
                     className={`p-10 bg-[#b9b9b9] rounded-lg text-xl mt-[32px] ml-auto font-bold cursor-pointer`}
-                    onClick={() => {editMode ? handleSave() : setEditMode(true)}}
+                    onClick={() => { editMode ? handleSave() : setEditMode(true) }}
                 >
                     {editMode ? "Save" : "Edit Post"}
                 </div>
             ) : (
                 null
             )
-            }    
-            <div className="mt-[128px] mb-[58px]">
-                <h1 className="my-0 text-4xl font-bold">{title}</h1>
+            }
+            <div className="mt-[128px] mb-[58px] my-0">
+                {editMode ?
+                    (
+                        <div className="flex">
+                            <div className="flex items-center border-r-2 mr-2">
+                                <p className="text-lg mr-2 text-gray-500 "> Title</p>
+                            </div>
+                            <textarea
+                                className="h-[2.5rem] w-full text-4xl font-[700] text-gray-500"
+                                placeholder='Title...'
+                                value={title}
+                                onChange={(e) => setTitle(e.target.value)}
+                            />
+                        </div>
+                    ) :
+                    (<h1 className="text-4xl font-[700]">{title}</h1>)
+                }
             </div>
-            <PostData postData={postData} authorData={authorData}/>
+            <PostData postData={postData} authorData={authorData} />
             {editMode ? (
-                <textarea className="resize-none" placeholder="Body..." onChange={(e) => setBody(e.target.value)}/>
+                <div className="flex">
+                    <div className="flex items-center border-r-2 mr-2">
+                        <p className="text-lg mr-2 text-gray-500 "> Body</p>
+                    </div>
+                    <textarea className="w-full" placeholder="Body..." value={body} onChange={(e) => setBody(e.target.value)} />
+                </div>
             ) : (
                 <div className="mt-[77px]">
                     {body}
@@ -150,7 +180,7 @@ export default function Post({ params }: { params: { id: string } }) {
 
     return (
         <PageShell uid={uid} setUid={(uid) => setUid(uid)}>
-            {<PostAuthed uid={uid} pid={params.id}/>}
+            {<PostAuthed uid={uid} pid={params.id} />}
         </PageShell>
     )
 }
