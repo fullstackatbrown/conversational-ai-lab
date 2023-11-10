@@ -160,39 +160,39 @@ const BlogComponent = ({ blog }: BlogComponentProps) => {
     );
   }, [blog.textContent]);
 
-  useEffect(() => {
-    setTitleSummary(
-      blog.title.length > 30 ? blog.title.slice(0, 30) + "..." : blog.title
-    );
-  }, [blog.textContent]);
+    useEffect(() => {
+        setTitleSummary(blog.title.length > 27 ? blog.title.slice(0, 27) + "..." : blog.title);
+    }, [blog.textContent])
 
-  const router = useRouter();
-  return (
-    <div className="mt-5 mx-10 p-10 md:flex gap-10">
-      <div className="flex-1 h-full">
-        <h1 className="mb-2 font-semibold lg:text-4xl text-3xl text-left">
-          {titleSummary}
-        </h1>
-        <p className="text-lg mb-1">
-          By
-          <span className="font-bold">{" " + userName + " "}</span>
-          <span> | </span>
-          <span>{blog.created}</span>
-        </p>
-        <p className="overflow-y-auto">{blogSummary}</p>
-        <button
-          className="mt-4 bg-gray-300 rounded-full px-10 py-1 w-auto hover:bg-gray-200"
-          onClick={() => router.push(`/posts/${blog.id}`)}
-        >
-          keep reading
-        </button>
+    const router = useRouter();
+    return (
+      <div className="mt-5 mx-10 p-10 md:flex gap-10">
+        <div className="flex-1 h-full flex-wrap">
+          <h1 className="mb-2 font-semibold lg:text-4xl text-3xl text-left">
+            {titleSummary}
+          </h1>
+          <p className="text-lg mb-1">
+            By
+            <span className="font-bold">{" " + userName + " "}</span>
+            <span> | </span>
+            <span>{blog.created}</span>
+          </p>
+          <p className="max-w-prose overflow-y-auto break-words">{blogSummary}</p>
+          <button
+            className="mt-4 bg-gray-300 rounded-full px-10 py-1 w-auto hover:bg-gray-200"
+            onClick={() => router.push(`/posts/${blog.id}`)}
+          >
+            keep reading
+          </button>
+        </div>
+        <div className="flex justify-center items-center flex-1">
+          <img
+            src="https://picsum.photos/500/500"
+            className="mt-2 object-cover w-0 h-0 md:h-[200px] md:w-[500px]"
+          />
+        </div>
       </div>
-      <div className="flex justify-center items-center flex-1 overflow-hidden">
-        <img
-          src="https://picsum.photos/500/500"
-          className="mt-2 object-cover w-0 h-0 md:h-[200px] md:w-[500px]"
-        />
-      </div>
-    </div>
-  );
-};
+    );
+}
+
+
