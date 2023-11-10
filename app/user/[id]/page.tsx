@@ -72,12 +72,19 @@ function Profile(props: { profId: string, uid: string }) {
                     </div>
                     { editable ? (
                         <div className="shrink flex">
-                            <button 
-                                className={`w-[186px] h-[50px] bg-[#b9b9b9] rounded-lg text-[18px] mt-[32px] ml-auto font-bold`}
+                            <div className="w-full text-right pr-[100px] mt-10">
+                                <button
+                                className="rounded-full lg:rounded-lg lg:px-[25px] text-black transition-all duration-500 font-bold px-3 lg:py-3 py-1 bg-[#b9b9b9]"
                                 onClick={() => setEditMode(true)}
-                            >
-                                Edit Profile
-                            </button>
+                                >
+                                    <div className="flex flex-row lg:gap-[17px] items-center justify-center">
+                                        <img src="/assets/edit.svg" />
+                                        <div className="md:w-full md:scale-100 scale-0 w-0 pt-[0.1rem]">
+                                        Edit Profile
+                                        </div>
+                                    </div>
+                                </button>
+                            </div>
                         </div>
                     ) : ( 
                         null
@@ -93,7 +100,7 @@ function Profile(props: { profId: string, uid: string }) {
         ) : (
         <div className="flex flex-col lg:h-[105vh] h-[105vh]">
             <div className="flex flex-col items-start w-full pl-[200px] pt-10 pb-6"> {/* Adjust padding and margin */}
-                <h1 className="text-3xl font-bold text-black font-inter">Edit Profile</h1>
+                <h1 className="lg:text-3xl font-bold text-black font-inter">Edit Profile</h1>
             </div>
             <div className="flex flex-col gap-2 justify-center items-start w-full ml-[200px]">
                 <div className="w-full max-w-[600px] mb-3"> {/* Set a maximum width */}
