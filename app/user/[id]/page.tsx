@@ -97,12 +97,6 @@ function Profile(props: { profId: string, uid: string }) {
             </div>
             <div className="flex flex-col gap-2 justify-center items-start w-full ml-[200px]">
                 <div className="w-full max-w-[600px] mb-3"> {/* Set a maximum width */}
-                    <div className="flex items-center gap-4 mb-4">
-                        <div className="w-20 h-20 bg-gray-300 rounded-full"></div> {/* Circular Profile Photo */}
-                        <button className="bg-gray-300 hover:bg-gray-200 text-black font-bold py-1 px-4 rounded text-xs">
-                            Edit Photo
-                        </button>
-                    </div>
 
                     <div className="flex gap-4 w-full mb-4"> 
                         <div className="w-1/2">
