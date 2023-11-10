@@ -40,7 +40,7 @@ import { Timestamp } from "firebase/firestore";
 
     const queryConditions = [
       where("postType", "==", "blog"),
-      orderBy("created", 'desc'),
+      orderBy("lastUpdated", 'desc'),
       limit(pageSize),
     ]
     if(lastDocumentSnapShot){
