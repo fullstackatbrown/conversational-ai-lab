@@ -1,6 +1,6 @@
 "use client";
 import { firebaseApp } from "@/firebaseClient";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import {
   Post,
@@ -17,10 +17,11 @@ import { useRouter } from "next/navigation";
 import { Color } from "@tiptap/extension-color";
 import ListItem from "@tiptap/extension-list-item";
 import TextStyle from "@tiptap/extension-text-style";
-import { EditorProvider, useCurrentEditor } from "@tiptap/react";
+import { Content, EditorProvider, JSONContent, useCurrentEditor } from "@tiptap/react";
 // import Highlight from "@tiptap/extension-highlight";
 // import Typography from "@tiptap/extension-typography";
 import StarterKit from "@tiptap/starter-kit";
+import { filledInputClasses } from "@mui/material";
 
 function EditPost(props: {
   pid: string;
@@ -68,7 +69,7 @@ const PostData = ({ postData, authorData }: PostDataProps) => {
               : authorData.userName}
           </h2>
           <h2 className="m-0 text-base text-[#6c6c6c]">
-            PhD, NBA MVP, 7x Champion | {authorData.role}
+            {authorData.role}
           </h2>
         </div>
       </div>
@@ -84,15 +85,17 @@ const PostData = ({ postData, authorData }: PostDataProps) => {
   );
 };
 
-const MenuBar = () => {
+
+const MenuBar: React.FC = () => {
   const { editor } = useCurrentEditor();
+
 
   if (!editor) {
     return null;
   }
 
   return (
-    <div className="relative flex h-20 items-center justify-between">
+    <div className="flex h-20 items-center justify-start gap-2">
       <button
         onClick={() => editor.chain().focus().toggleBold().run()}
         disabled={!editor.can().chain().focus().toggleBold().run()}
@@ -126,7 +129,7 @@ const MenuBar = () => {
       >
         Code
       </button>
-      <button
+      {/* <button
         onClick={() => editor.chain().focus().toggleBulletList().run()}
         className={
           editor.isActive("bulletList")
@@ -145,14 +148,14 @@ const MenuBar = () => {
         }
       >
         ordered list
-      </button>
+      </button> */}
     </div>
   );
 };
 
 const extensions = [
   Color.configure({ types: [TextStyle.name, ListItem.name] }),
-  TextStyle.configure({ types: [ListItem.name] }),
+  // TextStyle.configure({ types: [ListItem.name] }),
   StarterKit.configure({
     bulletList: {
       keepMarks: true,
@@ -165,23 +168,6 @@ const extensions = [
   }),
 ];
 
-const content = `
-  <p>
-    Sample blog content! Add your own post :)
-  </p>
-  `;
-
-const Tiptap = () => {
-  return (
-    <EditorProvider
-      slotBefore={<MenuBar />}
-      extensions={extensions}
-      content={content}
-      children={undefined}
-    ></EditorProvider>
-  );
-};
-
 function PostAuthed(props: { pid: string; uid: string }) {
   const [uid, setUid] = useState<string>(props.uid);
   const [postData, setPostData] = useState<Post>(dummyPost);
@@ -192,6 +178,7 @@ function PostAuthed(props: { pid: string; uid: string }) {
 
   const [title, setTitle] = useState<string>("");
   const [body, setBody] = useState<string>("");
+  const [richTextContent, setRichTextContent] = useState<JSONContent>();
 
   useEffect(() => {
     setUid(props.uid);
@@ -203,6 +190,7 @@ function PostAuthed(props: { pid: string; uid: string }) {
       setPostData(data);
       setTitle(data.title);
       setBody(data.textContent);
+      setRichTextContent(data.richTextContent);
       getUserData(data.uid).then((userData: UserData) => {
         setAuthorData(userData);
       });
@@ -219,6 +207,7 @@ function PostAuthed(props: { pid: string; uid: string }) {
       ...postData,
       title: title,
       textContent: body,
+      richTextContent: richTextContent,
     };
     updatePost(props.pid, updatedPost);
   };
@@ -228,14 +217,14 @@ function PostAuthed(props: { pid: string; uid: string }) {
     <div className="mx-[138px]">
       <div
         className=" flex items-center mt-3 cursor-pointer"
-        onClick={() => router.push("../")}
+        onClick={() => router.push("/../")}
       >
         <ChevronLeftIcon className="h-6 w-6" />
         <p>Back to posts</p>
       </div>
       {editable ? (
         <div
-          className={`p-10 bg-[#b9b9b9] rounded-lg text-xl mt-[32px] ml-auto font-bold cursor-pointer`}
+          className={`p-3 bg-[#b9b9b9] rounded-lg text-xl mt-[32px] font-bold cursor-pointer`}
           onClick={() => {
             editMode ? handleSave() : setEditMode(true);
           }}
@@ -257,11 +246,14 @@ function PostAuthed(props: { pid: string; uid: string }) {
             />
           </div>
         ) : (
-          <h1 className="text-4xl font-[700]">{title}</h1>
+          <h1
+            className="text-4xl font-[700]"
+            onDoubleClick={() => setEditMode(true)}
+          >{title}</h1>
         )}
       </div>
       <PostData postData={postData} authorData={authorData} />
-      {editMode ? (
+      {/* {editMode ? (
         <div className="flex">
           <div className="flex items-center border-r-2 mr-2">
             <p className="text-lg mr-2 text-gray-500 "> Body</p>
@@ -275,8 +267,31 @@ function PostAuthed(props: { pid: string; uid: string }) {
         </div>
       ) : (
         <div className="mt-[77px]">{body}</div>
-      )}
-      <Tiptap />
+      )} */}
+      {richTextContent &&
+        <div className="mt-5">
+          {editMode ?
+            <EditorProvider
+              slotBefore={<MenuBar />}
+              extensions={extensions}
+              content={richTextContent}
+              children={undefined}
+              onUpdate={(content) => {
+                setRichTextContent(content.editor.getJSON())
+                setBody(content.editor.getText())
+              }}
+              editable={true}
+            />
+            :
+            <EditorProvider
+              extensions={extensions}
+              content={richTextContent}
+              children={undefined}
+              editable={true}
+            />
+          }
+        </div>
+      }
     </div>
   );
 }

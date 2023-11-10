@@ -57,7 +57,7 @@ export default function Navbar({ uid, profileUrl, handleSignIn, handleSignOut }:
                             </div>
                             <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
                                 <div className="flex flex-shrink-0 items-center cursor-pointer"
-                                    onClick={() => router.push("./")}>
+                                    onClick={() => router.push("/")}>
                                     <Image
                                         className="h-44 w-auto py-5"
                                         src={photo}

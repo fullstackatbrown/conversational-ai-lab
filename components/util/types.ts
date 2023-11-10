@@ -2,6 +2,7 @@ export type UserRole = "admin" | "writer" | "reader";
 export type PostType = "blog" | "forum";
 export type ForumType = "announcement" | "question";
 
+import { Content, JSONContent } from "@tiptap/react";
 import { Timestamp } from "firebase/firestore/lite";
 
 const dateNow = new Date(Date.now()).toDateString()
@@ -40,8 +41,22 @@ export const dummyBlog : Post = {
   uid: "",
   created: dateNow,
   lastUpdated: dateNow,
-  title: "",
+  title: "New Post",
   textContent: "",
+  richTextContent: {
+    type: 'doc',
+    content: [
+      {
+        type: 'paragraph',
+        content: [
+          {
+            type : 'text',
+            text : 'Start writing your post here!'
+          }
+        ]
+      }
+    ]
+  },
   videoUrl: "",
   published: false,
   publishedOn: dateNow,
@@ -56,6 +71,7 @@ export const dummyPost: Post = {
   lastUpdated: dateNow,
   title: "",
   textContent: "",
+  richTextContent: {},
   videoUrl: "",
   published: false,
   publishedOn: dateNow,
@@ -70,6 +86,7 @@ export interface Post {
   lastUpdated: string;
   title: string;
   textContent: string;
+  richTextContent: JSONContent | undefined;
   videoUrl?: string;
   published: boolean;
   publishedOn?: string;
