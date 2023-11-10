@@ -74,7 +74,7 @@ function Profile(props: { profId: string, uid: string }) {
                         <div className="shrink flex">
                             <div className="w-full text-right pr-[100px] mt-10">
                                 <button
-                                className="rounded-full lg:rounded-lg lg:px-[25px] text-black transition-all duration-500 font-bold px-3 lg:py-3 py-1 bg-[#b9b9b9]"
+                                className="rounded-full lg:rounded-lg lg:px-[25px] text-black transition-all duration-500 font-semibold px-3 lg:py-3 py-1 bg-[#b9b9b9]"
                                 onClick={() => setEditMode(true)}
                                 >
                                     <div className="flex flex-row lg:gap-[17px] items-center justify-center">
