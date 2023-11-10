@@ -7,6 +7,9 @@ import { getPostData, updatePost } from '@/components/util/postFunctions';
 import PageShell from '@/components/PageShell';
 import { getUserData } from '@/components/util/userDBFunctions';
 
+import { useEditor, EditorContent } from '@tiptap/react'
+import StarterKit from '@tiptap/starter-kit'
+
 function EditPost(props: { pid: string, postData: Post, onSave: (post: Post) => void }) {
     const postData = props.postData;
     const [title, setTitle] = useState(postData.title);
@@ -57,6 +60,19 @@ const PostData = ({ postData, authorData }: PostDataProps) => {
         </>
     );
 }
+
+const Tiptap = () => {
+    const editor = useEditor({
+      extensions: [
+        StarterKit,
+      ],
+      content: '<p>Hello World! 🌎️</p>',
+    })
+  
+    return (
+      <EditorContent editor={editor} />
+    )
+  }
 
 function PostAuthed(props: { pid: string, uid: string }) {
     const [uid, setUid] = useState<string>(props.uid);
@@ -124,6 +140,7 @@ function PostAuthed(props: { pid: string, uid: string }) {
                 </div>
             )
             }
+            <Tiptap/>
         </div>
     );
 }
