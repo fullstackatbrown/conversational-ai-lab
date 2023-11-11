@@ -85,10 +85,16 @@ const PostData = ({ postData, authorData }: PostDataProps) => {
   );
 };
 
+interface MenuBarProps {
+  editMode: boolean
+}
 
-const MenuBar: React.FC = () => {
+const MenuBar: React.FC<MenuBarProps> = ({ editMode }) => {
   const { editor } = useCurrentEditor();
 
+  useEffect(() => {
+    editor?.setOptions({ editable: editMode })
+  }, [editMode])
 
   if (!editor) {
     return null;
@@ -174,6 +180,7 @@ function PostAuthed(props: { pid: string; uid: string }) {
   const [authorData, setAuthorData] = useState<UserData>(dummyUserData);
   const [editable, setEditable] = useState<boolean>(false);
   const [editMode, setEditMode] = useState<boolean>(false);
+  const { editor } = useCurrentEditor();
   const auth = getAuth(firebaseApp);
 
   const [title, setTitle] = useState<string>("");
@@ -270,9 +277,9 @@ function PostAuthed(props: { pid: string; uid: string }) {
       )} */}
       {richTextContent &&
         <div className="mt-5">
-          {editMode ?
+          {
             <EditorProvider
-              slotBefore={<MenuBar />}
+              slotBefore={editMode && <MenuBar editMode={editMode} />}
               extensions={extensions}
               content={richTextContent}
               children={undefined}
@@ -280,14 +287,7 @@ function PostAuthed(props: { pid: string; uid: string }) {
                 setRichTextContent(content.editor.getJSON())
                 setBody(content.editor.getText())
               }}
-              editable={true}
-            />
-            :
-            <EditorProvider
-              extensions={extensions}
-              content={richTextContent}
-              children={undefined}
-              editable={true}
+              editable={false}
             />
           }
         </div>
