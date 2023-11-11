@@ -31,6 +31,7 @@ const Blogs = (props: { uid: string }) => {
   const [postCount, setPostCount] = useState<number>(0);
   const [isMore, setIsMore] = useState<boolean>(true);
   const [isCreatingPost, setIsCreatingPost] = useState<boolean>(false);
+  const [postsLoading, setPostsLoading] = useState<boolean>(true);
   const router = useRouter();
 
   useEffect(() => {
@@ -46,7 +47,9 @@ const Blogs = (props: { uid: string }) => {
   }, [uid]);
 
   useEffect(() => {
+    setPostsLoading(true)
     getNPosts(5, null).then((posts) => {
+      setPostsLoading(false)
       if (lastSnapShot) {
         setIsMore(false)
       }
@@ -114,16 +117,22 @@ const Blogs = (props: { uid: string }) => {
       ) : null}
 
       <hr className="h-px mx-10 mt-3 bg-gray-300 border-0" />
-      {currentPosts.map((el, i) => {
-        return (
-          <div key={i}>
-            <BlogComponent blog={el} />
-            <hr className="h-px mx-10 my-3 bg-gray-300 border-0" />
-          </div>
-        );
-      })}
+      {
+        !postsLoading ?
+          currentPosts.map((el, i) => {
+            return (
+              <div key={i}>
+                <BlogComponent blog={el} />
+                <hr className="h-px mx-10 my-3 bg-gray-300 border-0" />
+              </div>
+            );
+          })
+          :
+          <div className="text-center py-5 text-2xl ">loading posts...</div>
+      }
       <div className="flex flex-col items-center justify-center w-full">
         {isMore ? (
+          !postsLoading &&
           <button
             id="btn"
             className="relative inline-flex items-center justify-center py-0.5 px-10 my-2 mr-2 overflow-hidden text-sm font-bold text-gray-600 rounded-lg bg-gray-200"
