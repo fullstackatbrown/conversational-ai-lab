@@ -30,6 +30,7 @@ const Blogs = (props: { uid: string }) => {
   const [currentPosts, setCurrentPosts] = useState<DocumentData[]>([]);
   const [postCount, setPostCount] = useState<number>(0);
   const [isMore, setIsMore] = useState<boolean>(true);
+  const [isCreatingPost, setIsCreatingPost] = useState<boolean>(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -47,9 +48,7 @@ const Blogs = (props: { uid: string }) => {
   useEffect(() => {
     getNPosts(5, null).then((posts) => {
       if (lastSnapShot) {
-        const btn = document.getElementById("btn") as HTMLButtonElement;
-        btn.style.display = "none";
-        btn.disabled = true;
+        setIsMore(false)
       }
       if (posts) {
         setCurrentPosts(posts.documents);
@@ -62,6 +61,7 @@ const Blogs = (props: { uid: string }) => {
   }, []);
 
   const handleCreate = async () => {
+    setIsCreatingPost(true)
     let postID = await createBlog(userData.uid);
     router.push(`/posts/${postID}`);
   };
@@ -105,7 +105,7 @@ const Blogs = (props: { uid: string }) => {
           >
             <div className="flex flex-row lg:gap-2 items-center justify-center">
               <div className="md:w-full md:scale-100 scale-0 w-0 pt-[0.1rem]">
-                Create Post
+                {isCreatingPost ? "Creating ..." : "Create Post"}
               </div>
               <img src="/assets/add-post.svg" />
             </div>
@@ -126,7 +126,7 @@ const Blogs = (props: { uid: string }) => {
         {isMore ? (
           <button
             id="btn"
-            className="relative inline-flex items-center justify-center py-0.5 px-10 mb-2 mr-2 overflow-hidden text-sm font-bold text-gray-600 rounded-lg bg-gray-200"
+            className="relative inline-flex items-center justify-center py-0.5 px-10 my-2 mr-2 overflow-hidden text-sm font-bold text-gray-600 rounded-lg bg-gray-200"
           >
             <span className="relative px-5 py-2.5" onClick={handleLoadMore}>
               Load More
@@ -167,7 +167,7 @@ const BlogComponent = ({ blog }: BlogComponentProps) => {
   const router = useRouter();
   return (
     <div className="mt-5 mx-10 p-10 md:flex gap-10">
-      <div className="flex-1 h-full flex-wrap">
+      <div className="flex-1 h-full ">
         <h1 className="mb-2 font-semibold lg:text-4xl text-3xl text-left">
           {titleSummary}
         </h1>

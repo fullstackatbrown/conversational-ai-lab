@@ -224,7 +224,7 @@ function PostAuthed(props: { pid: string; uid: string }) {
     <div className="mx-[138px]">
       <div
         className=" flex items-center mt-3 cursor-pointer"
-        onClick={() => router.push("/../")}
+        onClick={() => router.back()}
       >
         <ChevronLeftIcon className="h-6 w-6" />
         <p>Back to posts</p>
@@ -255,7 +255,7 @@ function PostAuthed(props: { pid: string; uid: string }) {
         ) : (
           <h1
             className="text-4xl font-[700]"
-            onDoubleClick={() => setEditMode(true)}
+            onDoubleClick={() => editable && setEditMode(true)}
           >{title}</h1>
         )}
       </div>
@@ -276,19 +276,30 @@ function PostAuthed(props: { pid: string; uid: string }) {
         <div className="mt-[77px]">{body}</div>
       )} */}
       {richTextContent &&
-        <div className="mt-5">
+        <div className={"mt-5 mb-20 " + editMode ? "" : ""}
+          onDoubleClick={() => editable && setEditMode(true)}>
           {
-            <EditorProvider
-              slotBefore={editMode && <MenuBar editMode={editMode} />}
-              extensions={extensions}
-              content={richTextContent}
-              children={undefined}
-              onUpdate={(content) => {
-                setRichTextContent(content.editor.getJSON())
-                setBody(content.editor.getText())
-              }}
-              editable={false}
-            />
+            <div className="flex mt-5 mb-10">
+              {editMode &&
+                <div className="flex items-center border-r-2 mr-2">
+                  <p className="text-lg mr-2 text-gray-500 "> Body</p>
+                </div>
+              }
+              <div className="flex-1">
+                <EditorProvider
+                  slotBefore={editMode && <MenuBar editMode={editMode} />}
+                  extensions={extensions}
+                  content={richTextContent}
+                  children={undefined}
+                  onUpdate={(content) => {
+                    setRichTextContent(content.editor.getJSON())
+                    console.log(content.editor.getJSON())
+                    setBody(content.editor.getText())
+                  }}
+                  editable={false}
+                />
+              </div>
+            </div>
           }
         </div>
       }

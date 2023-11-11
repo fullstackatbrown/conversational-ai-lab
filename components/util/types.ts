@@ -42,7 +42,7 @@ export const dummyBlog : Post = {
   created: dateNow,
   lastUpdated: dateNow,
   title: "New Post",
-  textContent: "",
+  textContent: "Start writing your post here!",
   richTextContent: {
     type: 'doc',
     content: [
@@ -54,7 +54,17 @@ export const dummyBlog : Post = {
             text : 'Start writing your post here!'
           }
         ]
-      }
+      },
+      {type: "paragraph"},
+      {type: "paragraph"},
+      {type: "paragraph"},
+      {type: "paragraph"},
+      {type: "paragraph"},
+      {type: "paragraph"},
+      {type: "paragraph"},
+      {type: "paragraph"},
+      {type: "paragraph"},
+      {type: "paragraph"},
     ]
   },
   videoUrl: "",
