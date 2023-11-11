@@ -93,7 +93,7 @@ const MenuBar: React.FC<MenuBarProps> = ({ editMode }) => {
   const { editor } = useCurrentEditor();
 
   useEffect(() => {
-    editor?.setOptions({ editable: editMode })
+    editor?.setEditable(editMode)
   }, [editMode])
 
   if (!editor) {
