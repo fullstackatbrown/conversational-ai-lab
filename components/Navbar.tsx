@@ -61,7 +61,7 @@ export default function Navbar({ uid, profileUrl, handleSignIn, handleSignOut }:
                                 <div className="flex flex-shrink-0 items-center cursor-pointer"
                                     onClick={() => router.push("/")}>
                                     <Image
-                                        className="lg:block hidden h-28 w-auto py-5"
+                                        className="lg:block hidden h-24 w-auto py-5"
                                         src={logo_long}
                                         alt="Brown Conversational AI Lab Logo"
                                     />
