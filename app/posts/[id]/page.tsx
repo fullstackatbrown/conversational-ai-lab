@@ -223,7 +223,7 @@ function PostAuthed(props: { pid: string; uid: string }) {
   return (
     <div className="mx-[138px]">
       <div
-        className=" flex items-center mt-3 cursor-pointer"
+        className=" flex items-center mt-10 cursor-pointer"
         onClick={() => router.back()}
       >
         <ChevronLeftIcon className="h-6 w-6" />
