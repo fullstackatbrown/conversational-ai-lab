@@ -5,7 +5,9 @@ import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import Image from "next/image"
 
-import photo from "../public/assets/logo.png";
+// import photo from "../public/assets/logo.png";
+import logo_short from "../public/assets/logo_short.svg"
+import logo_long from "../public/assets/logo_long.svg"
 import { useRouter } from "next/navigation";
 
 // placeholder links below for testing
@@ -59,8 +61,13 @@ export default function Navbar({ uid, profileUrl, handleSignIn, handleSignOut }:
                                 <div className="flex flex-shrink-0 items-center cursor-pointer"
                                     onClick={() => router.push("/")}>
                                     <Image
-                                        className="h-44 w-auto py-5"
-                                        src={photo}
+                                        className="lg:block hidden h-28 w-auto py-5"
+                                        src={logo_long}
+                                        alt="Brown Conversational AI Lab Logo"
+                                    />
+                                    <Image
+                                        className="lg:hidden visible h-24 w-auto py-5"
+                                        src={logo_short}
                                         alt="Brown Conversational AI Lab Logo"
                                     />
                                 </div>
