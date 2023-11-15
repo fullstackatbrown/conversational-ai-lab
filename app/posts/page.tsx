@@ -1,17 +1,14 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Fragment } from "react";
 import { UserData, dummyUserData, Post } from "@/components/util/types";
 import { getUserData } from "@/components/util/userDBFunctions";
 import { createBlog, getNPosts } from "@/components/util/postFunctions";
 import { useRouter } from "next/navigation";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { firebaseApp } from "@/firebaseClient";
-import Image from "next/image";
-import Navbar from "@/components/Navbar";
 import PageShell from "@/components/PageShell";
 import { QueryDocumentSnapshot } from "firebase/firestore";
 import { DocumentData } from "firebase/firestore";
-import { PlayCircleIcon } from "@heroicons/react/24/outline";
+import { Transition } from "@headlessui/react";
+import { Dialog } from "@headlessui/react";
 
 export default function BlogsPage() {
   const [uid, setUid] = useState<string>("");
@@ -32,6 +29,7 @@ const Blogs = (props: { uid: string }) => {
   const [isMore, setIsMore] = useState<boolean>(true);
   const [isCreatingPost, setIsCreatingPost] = useState<boolean>(false);
   const [postsLoading, setPostsLoading] = useState<boolean>(true);
+  const [createPostDialogOpen, setCreatePostDialogOpen] = useState<boolean>(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -64,9 +62,10 @@ const Blogs = (props: { uid: string }) => {
   }, []);
 
   const handleCreate = async () => {
-    setIsCreatingPost(true)
-    let postID = await createBlog(userData.uid);
-    router.push(`/posts/${postID}`);
+    setCreatePostDialogOpen(true)
+    // setIsCreatingPost(true)
+    // let postID = await createBlog(userData.uid);
+    // router.push(`/posts/${postID}`);
   };
 
   const handleLoadMore = async () => {
@@ -95,26 +94,80 @@ const Blogs = (props: { uid: string }) => {
 
   return (
     <div>
+      <Transition
+        as={Fragment}
+        show={createPostDialogOpen}
+        enter="transition-opacity duration-300"
+        enterFrom="opacity-0"
+        enterTo="opacity-100"
+        leave="transition-opacity duration-300"
+        leaveFrom="opacity-100"
+        leaveTo="opacity-0"
+      >
+        <Dialog as="div" className="relative z-10" onClose={() => setCreatePostDialogOpen(false)}>
+          <Transition.Child
+            as={Fragment}
+            enter="ease-out duration-300"
+            enterFrom="opacity-0"
+            enterTo="opacity-100"
+            leave="ease-in duration-200"
+            leaveFrom="opacity-100"
+            leaveTo="opacity-0"
+          >
+            <div className="fixed inset-0 bg-white opacity-80 backdrop-blur-sm" />
+          </Transition.Child>
+          <Transition.Child
+            as={Fragment}
+            enter="ease-out duration-300"
+            enterFrom="opacity-0 scale-95"
+            enterTo="opacity-100 scale-100"
+            leave="ease-in duration-200"
+            leaveFrom="opacity-100 scale-100"
+            leaveTo="opacity-0 scale-95"
+          >
+            <Dialog.Panel className="overflow-hidden mx-auto my-auto w-full max-w-[426px] fixed inset-0 h-[205px] border border-[#6A6A6A] transition-all transform bg-[#242424] z-50">
+              <Dialog.Title className="text-[14px] text-center font-[700] mt-6 pt-4 mb-4 px-2">Are you sure you want to delete this streaming page?</Dialog.Title>
+              <div className="px-2 text-[14px] text-center">
+                <p>This action is permanent and cannot be reversed.</p>
+                <div className="flex justify-between gap-4 mx-4 mt-10">
+                  <button
+                    className="w-[179px] py-2 font-normal text-white text-center bg-[#242424] border border-[#808080]"
+                    onClick={() => setCreatePostDialogOpen(false)}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    className="w-[179px] py-2 font-normal text-white text-center bg-[#F24B4B]"
+                    onClick={() => setCreatePostDialogOpen(true)}
+                  >Yes, delete it</button>
+                </div>
+              </div>
+            </Dialog.Panel>
+          </Transition.Child>
+        </Dialog>
+      </Transition>
       <div className="bg-[#9A9A9A] flex flex-col items-center justify-center w-full h-[200px]">
         <div className="text-left w-full px-10 lg:px-[150px]">
           <h1 className="lg:text-5xl text-4xl text-white">Blog</h1>
         </div>
       </div>
-      {uid && userData.role != 'reader' ? (
-        <div className="w-full text-right pr-[100px] mt-10">
-          <button
-            className="rounded-full lg:rounded-none text-white transition-all duration-500 font-bold px-3 lg:py-3 py-1 bg-[#AE2C27]"
-            onClick={handleCreate}
-          >
-            <div className="flex flex-row lg:gap-2 items-center justify-center">
-              <div className="md:w-full md:scale-100 scale-0 w-0 pt-[0.1rem]">
-                {isCreatingPost ? "Creating ..." : "Create Post"}
+      {
+        uid && userData.role != 'reader' ? (
+          <div className="w-full text-right pr-[100px] mt-10">
+            <button
+              className="rounded-full lg:rounded-none text-white transition-all duration-500 font-bold px-3 lg:py-3 py-1 bg-[#AE2C27]"
+              onClick={handleCreate}
+            >
+              <div className="flex flex-row lg:gap-2 items-center justify-center">
+                <div className="md:w-full md:scale-100 scale-0 w-0 pt-[0.1rem]">
+                  {isCreatingPost ? "Creating ..." : "Create Post"}
+                </div>
+                <img src="/assets/add-post.svg" />
               </div>
-              <img src="/assets/add-post.svg" />
-            </div>
-          </button>
-        </div>
-      ) : null}
+            </button>
+          </div>
+        ) : null
+      }
 
       <hr className="h-px mx-10 mt-3 bg-gray-300 border-0" />
       {
@@ -145,7 +198,7 @@ const Blogs = (props: { uid: string }) => {
           <p className="mb-2">You have reached the end!</p>
         )}
       </div>
-    </div>
+    </div >
   );
 };
 interface BlogComponentProps {
