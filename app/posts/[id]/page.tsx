@@ -224,22 +224,12 @@ function PostAuthed(props: { pid: string; uid: string }) {
     <div className="mx-[138px]">
       <div
         className=" flex items-center mt-10 cursor-pointer"
-        onClick={() => router.back()}
+        onClick={() => router.push("/posts")}
       >
         <ChevronLeftIcon className="h-6 w-6" />
         <p>Back to posts</p>
       </div>
-      {editable ? (
-        <div
-          className={`p-3 bg-[#b9b9b9] rounded-lg text-xl mt-[32px] font-bold cursor-pointer`}
-          onClick={() => {
-            editMode ? handleSave() : setEditMode(true);
-          }}
-        >
-          {editMode ? "Save" : "Edit Post"}
-        </div>
-      ) : null}
-      <div className="mt-[128px] mb-[58px] my-0">
+      <div className="mt-[60px] mb-[58px] my-0">
         {editMode ? (
           <div className="flex">
             <div className="flex items-center border-r-2 mr-2">
@@ -260,21 +250,6 @@ function PostAuthed(props: { pid: string; uid: string }) {
         )}
       </div>
       <PostData postData={postData} authorData={authorData} />
-      {/* {editMode ? (
-        <div className="flex">
-          <div className="flex items-center border-r-2 mr-2">
-            <p className="text-lg mr-2 text-gray-500 "> Body</p>
-          </div>
-          <textarea
-            className="w-full"
-            placeholder="Body..."
-            value={body}
-            onChange={(e) => setBody(e.target.value)}
-          />
-        </div>
-      ) : (
-        <div className="mt-[77px]">{body}</div>
-      )} */}
       {richTextContent &&
         <div className={"mt-5 mb-20 " + editMode ? "" : ""}
           onDoubleClick={() => editable && setEditMode(true)}>
@@ -303,6 +278,16 @@ function PostAuthed(props: { pid: string; uid: string }) {
           }
         </div>
       }
+      {editable ? (
+        <div
+          className={`p-2 bg-[#ED1C24] w-[154px] text-xl text-center text-white font-bold cursor-pointer`}
+          onClick={() => {
+            editMode ? handleSave() : setEditMode(true);
+          }}
+        >
+          {editMode ? "Save Post" : "Edit Post"}
+        </div>
+      ) : null}
     </div>
   );
 }

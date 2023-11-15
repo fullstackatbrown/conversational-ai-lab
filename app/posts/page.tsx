@@ -156,9 +156,11 @@ const BlogComponent = ({ blog }: BlogComponentProps) => {
   const [blogSummary, setBlogSummary] = useState<string>("");
   const [titleSummary, setTitleSummary] = useState<string>("");
   const [userName, setUserName] = useState<string>("");
+  const [userId, setUserId] = useState<string>("");
 
   getUserData(blog.uid).then((userData) => {
     setUserName(userData.userName);
+    setUserId(userData.uid);
   });
 
   useEffect(() => {
@@ -182,7 +184,12 @@ const BlogComponent = ({ blog }: BlogComponentProps) => {
         </h1>
         <p className="text-lg mb-1">
           By
-          <span className="font-bold">{" " + userName + " "}</span>
+          <span
+            className="font-bold cursor-pointer"
+            onClick={() => router.push(`/user/${userId}`)}
+          >
+            {" " + userName + " "}
+          </span>
           <span> | </span>
           <span>{blog.created}</span>
         </p>
