@@ -43,30 +43,31 @@ export const dummyBlog : Post = {
   lastUpdated: dateNow,
   title: "New Post",
   textContent: "Start writing your post here!",
-  richTextContent: {
-    type: 'doc',
-    content: [
-      {
-        type: 'paragraph',
-        content: [
-          {
-            type : 'text',
-            text : 'Start writing your post here!'
-          }
-        ]
-      },
-      {type: "paragraph"},
-      {type: "paragraph"},
-      {type: "paragraph"},
-      {type: "paragraph"},
-      {type: "paragraph"},
-      {type: "paragraph"},
-      {type: "paragraph"},
-      {type: "paragraph"},
-      {type: "paragraph"},
-      {type: "paragraph"},
-    ]
-  },
+  richTextContent: "<p>This is <strong>formatted</strong> text.</p>",
+  // richTextContent: {
+  //   type: 'doc',
+  //   content: [
+  //     {
+  //       type: 'paragraph',
+  //       content: [
+  //         {
+  //           type : 'text',
+  //           text : 'Start writing your post here!'
+  //         }
+  //       ]
+  //     },
+  //     {type: "paragraph"},
+  //     {type: "paragraph"},
+  //     {type: "paragraph"},
+  //     {type: "paragraph"},
+  //     {type: "paragraph"},
+  //     {type: "paragraph"},
+  //     {type: "paragraph"},
+  //     {type: "paragraph"},
+  //     {type: "paragraph"},
+  //     {type: "paragraph"},
+  //   ]
+  // },
   videoUrl: "",
   published: false,
   publishedOn: dateNow,
@@ -81,7 +82,8 @@ export const dummyPost: Post = {
   lastUpdated: dateNow,
   title: "",
   textContent: "",
-  richTextContent: {},
+  // richTextContent: {},
+  richTextContent: "",
   videoUrl: "",
   published: false,
   publishedOn: dateNow,
@@ -96,7 +98,8 @@ export interface Post {
   lastUpdated: string;
   title: string;
   textContent: string;
-  richTextContent: JSONContent | undefined;
+  // richTextContent: JSONContent | undefined | string;
+  richTextContent: string | undefined;
   videoUrl?: string;
   published: boolean;
   publishedOn?: string;

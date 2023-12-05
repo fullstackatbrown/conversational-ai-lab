@@ -17,9 +17,17 @@ import { useRouter } from "next/navigation";
 import { Color } from "@tiptap/extension-color";
 import ListItem from "@tiptap/extension-list-item";
 import TextStyle from "@tiptap/extension-text-style";
-import { Content, EditorProvider, JSONContent, useCurrentEditor } from "@tiptap/react";
-// import Highlight from "@tiptap/extension-highlight";
-// import Typography from "@tiptap/extension-typography";
+import { Editor } from "@tinymce/tinymce-react";
+import Heading from "@tiptap/extension-heading";
+import {
+  Content,
+  EditorProvider,
+  JSONContent,
+  useCurrentEditor,
+  FloatingMenu,
+  BubbleMenu,
+  EditorContent,
+} from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { filledInputClasses } from "@mui/material";
 
@@ -45,20 +53,25 @@ function EditPost(props: {
   };
 }
 
+function htmlToPlainText(htmlString: string): string {
+  const doc = new DOMParser().parseFromString(htmlString, 'text/html');
+  return doc.body.textContent || '';
+}
+
+
 interface PostDataProps {
   postData: Post;
   authorData: UserData;
   body: string;
-  
 }
 
 const PostData = ({ postData, authorData, body }: PostDataProps) => {
   const published = new Date(postData.created);
-  const [readTime, setReadTime] = useState<number>(0)
+  const [readTime, setReadTime] = useState<number>();
 
   useEffect(() => {
     const wordsPerMinute = 200;
-    setReadTime(Math.ceil(body.split(" ").length / wordsPerMinute))
+    setReadTime(Math.ceil(body.split(" ").length / wordsPerMinute));
   }, [body]);
 
   return (
@@ -76,15 +89,15 @@ const PostData = ({ postData, authorData, body }: PostDataProps) => {
               ? authorData.firstName + " " + authorData.lastName
               : authorData.userName}
           </h2>
-          <h2 className="m-0 text-base text-[#6c6c6c]">
-            {authorData.role}
-          </h2>
+          <h2 className="m-0 text-base text-[#6c6c6c]">{authorData.role}</h2>
         </div>
       </div>
       <hr className="w-full h-1 mt-[21px]" />
       <div className="flex flex-row justify-between my-[14px] mx-[60px]">
         <p className="my-0 text-base text-[#6c6c6c]">
-          {readTime + " min read"} <span className = "text-xl font-[300]">|</span> {published.toDateString()}
+          {readTime && readTime + " min read"}{" "}
+          <span className="text-xl font-[300]">|</span>{" "}
+          {published.toDateString()}
         </p>
         <div>Comment</div>
       </div>
@@ -94,15 +107,15 @@ const PostData = ({ postData, authorData, body }: PostDataProps) => {
 };
 
 interface MenuBarProps {
-  editMode: boolean
+  editMode: boolean;
 }
 
 const MenuBar: React.FC<MenuBarProps> = ({ editMode }) => {
   const { editor } = useCurrentEditor();
 
   useEffect(() => {
-    editor?.setEditable(editMode)
-  }, [editMode])
+    editor?.setEditable(editMode);
+  }, [editMode]);
 
   if (!editor) {
     return null;
@@ -110,6 +123,16 @@ const MenuBar: React.FC<MenuBarProps> = ({ editMode }) => {
 
   return (
     <div className="flex h-20 items-center justify-start gap-2">
+      <button
+        onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
+        className={
+          editor.isActive("heading", { level: 1 })
+            ? "is-active text-gray-900 bg-gray-300 font-bold py-2 px-4 rounded"
+            : "text-gray-500 font-bold py-2 px-4 rounded"
+        }
+      >
+        H1
+      </button>
       <button
         onClick={() => editor.chain().focus().toggleBold().run()}
         disabled={!editor.can().chain().focus().toggleBold().run()}
@@ -143,33 +166,14 @@ const MenuBar: React.FC<MenuBarProps> = ({ editMode }) => {
       >
         Code
       </button>
-      {/* <button
-        onClick={() => editor.chain().focus().toggleBulletList().run()}
-        className={
-          editor.isActive("bulletList")
-            ? "is-active text-gray-900 bg-gray-300 font-bold py-2 px-4 rounded"
-            : "text-gray-500 font-bold py-2 px-4 rounded"
-        }
-      >
-        bullet list
-      </button>
-      <button
-        onClick={() => editor.chain().focus().toggleOrderedList().run()}
-        className={
-          editor.isActive("orderedList")
-            ? "is-active text-gray-900 bg-gray-300 font-bold py-2 px-4 rounded"
-            : "text-gray-500 font-bold py-2 px-4 rounded"
-        }
-      >
-        ordered list
-      </button> */}
     </div>
   );
 };
 
 const extensions = [
   Color.configure({ types: [TextStyle.name, ListItem.name] }),
-  // TextStyle.configure({ types: [ListItem.name] }),
+  //@ts-ignore
+  TextStyle.configure({ types: [ListItem.name] }),
   StarterKit.configure({
     bulletList: {
       keepMarks: true,
@@ -188,12 +192,12 @@ function PostAuthed(props: { pid: string; uid: string }) {
   const [authorData, setAuthorData] = useState<UserData>(dummyUserData);
   const [editable, setEditable] = useState<boolean>(false);
   const [editMode, setEditMode] = useState<boolean>(false);
-  const { editor } = useCurrentEditor();
   const auth = getAuth(firebaseApp);
 
   const [title, setTitle] = useState<string>("");
   const [body, setBody] = useState<string>("");
-  const [richTextContent, setRichTextContent] = useState<JSONContent>();
+  // const [richTextContent, setRichTextContent] = useState<JSONContent>();
+  const [richTextContent, setRichTextContent] = useState<string>();
 
   useEffect(() => {
     setUid(props.uid);
@@ -243,8 +247,8 @@ function PostAuthed(props: { pid: string; uid: string }) {
             <div className="flex items-center border-r-2 mr-2">
               <p className="text-lg mr-2 text-gray-500 "> Title</p>
             </div>
-            <textarea
-              className="h-[2.5rem] w-full text-4xl font-[700] text-gray-500"
+            <input
+              className="h-[2.5rem] w-full text-4xl font-[700] text-gray-500 outline-none"
               placeholder="Title..."
               value={title}
               onChange={(e) => setTitle(e.target.value)}
@@ -254,38 +258,60 @@ function PostAuthed(props: { pid: string; uid: string }) {
           <h1
             className="text-4xl font-[700]"
             onDoubleClick={() => editable && setEditMode(true)}
-          >{title}</h1>
+          >
+            {title}
+          </h1>
         )}
       </div>
-      <PostData body = {body} postData={postData} authorData={authorData} />
-      {richTextContent &&
-        <div className={"mt-5 mb-20 " + editMode ? "" : ""}
-          onDoubleClick={() => editable && setEditMode(true)}>
-          {
-            <div className="flex mt-5 mb-10">
-              {editMode &&
-                <div className="flex items-center border-r-2 mr-2">
-                  <p className="text-lg mr-2 text-gray-500 "> Body</p>
-                </div>
-              }
-              <div className="flex-1">
-                <EditorProvider
-                  slotBefore={editMode && <MenuBar editMode={editMode} />}
-                  extensions={extensions}
-                  content={richTextContent}
-                  children={undefined}
-                  onUpdate={(content) => {
-                    setRichTextContent(content.editor.getJSON())
-                    console.log(content.editor.getJSON())
-                    setBody(content.editor.getText())
-                  }}
-                  editable={false}
-                />
+      <PostData body={body} postData={postData} authorData={authorData} />
+      {richTextContent && (
+        <div
+          className={"mt-5 mb-20 " + editMode ? "" : ""}
+          onDoubleClick={() => editable && setEditMode(true)}
+        >
+          <div className="flex mt-5 mb-10">
+            {editMode && (
+              <div className="flex items-center border-r-2 mr-2">
+                <p className="text-lg mr-2 text-gray-500 ">Body</p>
               </div>
+            )}
+            <div className="flex-1">
+              {/* <EditorProvider
+                slotBefore={editMode && <MenuBar editMode={editMode} />}
+                extensions={extensions}
+                content={richTextContent}
+                children = {undefined}
+                onUpdate={(content) => {
+                  setRichTextContent(content.editor.getJSON());
+                  console.log(content.editor.getJSON());
+                  setBody(content.editor.getText());
+                }}
+                editable={false}
+              /> */}
+              <Editor
+                apiKey="m3k4ttny70qcb0w63mv6hqr47xwiyl9gxyzq1qr4rrv6bsbd"
+                init={{
+                  plugins:
+                    "tinycomments mentions anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed permanentpen footnotes advtemplate advtable advcode editimage tableofcontents mergetags powerpaste tinymcespellchecker autocorrect a11ychecker typography inlinecss",
+                  toolbar:
+                    "undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | align lineheight | tinycomments | checklist numlist bullist indent outdent | emoticons charmap | removeformat",
+                  tinycomments_mode: "embedded",
+                  tinycomments_author: "Author name",
+                  mergetags_list: [
+                    { value: "First.Name", title: "First Name" },
+                    { value: "Email", title: "Email" },
+                  ],
+                }}
+                initialValue={"start editing"}
+                onEditorChange={(content) => {
+                  setRichTextContent(content)
+                  setBody(htmlToPlainText(content))
+                }}
+              />
             </div>
-          }
+          </div>
         </div>
-      }
+      )}
       {editable ? (
         <div
           className={`p-2 bg-[#ED1C24] w-[154px] text-xl text-center text-white font-bold cursor-pointer`}
