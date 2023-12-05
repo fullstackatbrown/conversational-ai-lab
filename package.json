@@ -22,7 +22,7 @@
     "@tiptap/react": "^2.1.12",
     "@tiptap/starter-kit": "^2.1.12",
     "firebase": "^10.4.0",
-    "next": "latest",
+    "next": "^14.0.3",
     "react": "latest",
     "react-dom": "latest"
   },

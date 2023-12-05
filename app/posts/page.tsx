@@ -62,10 +62,10 @@ const Blogs = (props: { uid: string }) => {
   }, []);
 
   const handleCreate = async () => {
-    setCreatePostDialogOpen(true)
-    // setIsCreatingPost(true)
-    // let postID = await createBlog(userData.uid);
-    // router.push(`/posts/${postID}`);
+    // setCreatePostDialogOpen(true)
+    setIsCreatingPost(true)
+    let postID = await createBlog(userData.uid);
+    router.push(`/posts/${postID}`);
   };
 
   const handleLoadMore = async () => {
@@ -125,10 +125,9 @@ const Blogs = (props: { uid: string }) => {
             leaveFrom="opacity-100 scale-100"
             leaveTo="opacity-0 scale-95"
           >
-            <Dialog.Panel className="overflow-hidden mx-auto my-auto w-full max-w-[426px] fixed inset-0 h-[205px] border border-[#6A6A6A] transition-all transform bg-[#242424] z-50">
-              <Dialog.Title className="text-[14px] text-center font-[700] mt-6 pt-4 mb-4 px-2">Are you sure you want to delete this streaming page?</Dialog.Title>
+            <Dialog.Panel className="overflow-hidden mx-auto my-auto w-full max-w-[426px] fixed inset-0 h-[205px] border border-[#6A6A6A] transition-all transform bg-white z-50">
+              <Dialog.Title className="text-[14px] text-center font-[700] mt-6 pt-4 mb-4 px-2">New Blog Post</Dialog.Title>
               <div className="px-2 text-[14px] text-center">
-                <p>This action is permanent and cannot be reversed.</p>
                 <div className="flex justify-between gap-4 mx-4 mt-10">
                   <button
                     className="w-[179px] py-2 font-normal text-white text-center bg-[#242424] border border-[#808080]"
@@ -139,7 +138,7 @@ const Blogs = (props: { uid: string }) => {
                   <button
                     className="w-[179px] py-2 font-normal text-white text-center bg-[#F24B4B]"
                     onClick={() => setCreatePostDialogOpen(true)}
-                  >Yes, delete it</button>
+                  >Create </button>
                 </div>
               </div>
             </Dialog.Panel>
@@ -176,7 +175,7 @@ const Blogs = (props: { uid: string }) => {
             return (
               <div key={i}>
                 <BlogComponent blog={el} />
-                <hr className="h-px mx-10 my-3 bg-gray-300 border-0" />
+                <hr className="h-px mx-10 my-5 bg-gray-300 border-0" />
               </div>
             );
           })
@@ -230,7 +229,11 @@ const BlogComponent = ({ blog }: BlogComponentProps) => {
 
   const router = useRouter();
   return (
-    <div className="mt-5 mx-10 p-10 md:flex gap-10">
+    <div className="mt-5 mx-10 p-10 md:flex gap-10 hover:bg-gray-100"
+      onClick = {() => {
+        router.push(`/posts/${blog.id}`)
+      }} 
+    >
       <div className="flex-1 h-full ">
         <h1 className="mb-2 font-semibold lg:text-4xl text-3xl text-left">
           {titleSummary}
@@ -247,12 +250,6 @@ const BlogComponent = ({ blog }: BlogComponentProps) => {
           <span>{blog.created}</span>
         </p>
         <p className="max-w-prose overflow-y-auto break-words">{blogSummary}</p>
-        <button
-          className="mt-4 bg-gray-300 rounded-full px-10 py-1 w-auto hover:bg-gray-200"
-          onClick={() => router.push(`/posts/${blog.id}`)}
-        >
-          keep reading
-        </button>
       </div>
       <div className="flex justify-center items-center flex-1">
         <img

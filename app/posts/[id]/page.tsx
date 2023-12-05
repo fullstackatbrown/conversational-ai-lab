@@ -48,10 +48,18 @@ function EditPost(props: {
 interface PostDataProps {
   postData: Post;
   authorData: UserData;
+  body: string;
+  
 }
 
-const PostData = ({ postData, authorData }: PostDataProps) => {
+const PostData = ({ postData, authorData, body }: PostDataProps) => {
   const published = new Date(postData.created);
+  const [readTime, setReadTime] = useState<number>(0)
+
+  useEffect(() => {
+    const wordsPerMinute = 200;
+    setReadTime(Math.ceil(body.split(" ").length / wordsPerMinute))
+  }, [body]);
 
   return (
     <>
@@ -76,7 +84,7 @@ const PostData = ({ postData, authorData }: PostDataProps) => {
       <hr className="w-full h-1 mt-[21px]" />
       <div className="flex flex-row justify-between my-[14px] mx-[60px]">
         <p className="my-0 text-base text-[#6c6c6c]">
-          {published.toDateString()}
+          {readTime + " min read"} <span className = "text-xl font-[300]">|</span> {published.toDateString()}
         </p>
         <div>Comment</div>
       </div>
@@ -249,7 +257,7 @@ function PostAuthed(props: { pid: string; uid: string }) {
           >{title}</h1>
         )}
       </div>
-      <PostData postData={postData} authorData={authorData} />
+      <PostData body = {body} postData={postData} authorData={authorData} />
       {richTextContent &&
         <div className={"mt-5 mb-20 " + editMode ? "" : ""}
           onDoubleClick={() => editable && setEditMode(true)}>
