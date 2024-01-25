@@ -200,8 +200,10 @@ function PostAuthed(props: { pid: string; uid: string }) {
   const [richTextContent, setRichTextContent] = useState<string>();
 
   useEffect(() => {
+    console.log(richTextContent)
+  }, [richTextContent])
+  useEffect(() => {
     setUid(props.uid);
-    console.log(uid);
   }, [props.uid]);
 
   useEffect(() => {
@@ -230,6 +232,14 @@ function PostAuthed(props: { pid: string; uid: string }) {
     };
     updatePost(props.pid, updatedPost);
   };
+  
+  function checkAndSetRichTextContent(newContent : string){
+    if(newContent != ""){
+    setRichTextContent(newContent)
+    } else {
+      setRichTextContent(" ");
+    }
+  }
 
   const router = useRouter();
   return (
@@ -264,6 +274,19 @@ function PostAuthed(props: { pid: string; uid: string }) {
         )}
       </div>
       <PostData body={body} postData={postData} authorData={authorData} />
+      {editable && (
+        <div>
+        <button
+          className={`mt-2.5 p-2 bg-[#ED1C24] w-[154px] text-xl text-center text-white font-bold `}
+          onClick={() => {
+            editMode ? handleSave() : setEditMode(true);
+          }}
+        >
+          {editMode ? "Save Post" : "Edit Post"}
+        </button>
+        {/* TODO: UPLOAD IMAGE */}
+        </div>
+      )}
       {richTextContent && (
         <div
           className={"mt-5 mb-20 " + editMode ? "" : ""}
@@ -276,23 +299,13 @@ function PostAuthed(props: { pid: string; uid: string }) {
               </div>
             )}
             <div className="flex-1">
-              {/* <EditorProvider
-                slotBefore={editMode && <MenuBar editMode={editMode} />}
-                extensions={extensions}
-                content={richTextContent}
-                children = {undefined}
-                onUpdate={(content) => {
-                  setRichTextContent(content.editor.getJSON());
-                  console.log(content.editor.getJSON());
-                  setBody(content.editor.getText());
-                }}
-                editable={false}
-              /> */}
+              {
+                editMode ? 
               <Editor
                 apiKey="m3k4ttny70qcb0w63mv6hqr47xwiyl9gxyzq1qr4rrv6bsbd"
                 init={{
                   plugins:
-                    "tinycomments mentions anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed permanentpen footnotes advtemplate advtable advcode editimage tableofcontents mergetags powerpaste tinymcespellchecker autocorrect a11ychecker typography inlinecss",
+                    "",
                   toolbar:
                     "undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | align lineheight | tinycomments | checklist numlist bullist indent outdent | emoticons charmap | removeformat",
                   tinycomments_mode: "embedded",
@@ -302,26 +315,19 @@ function PostAuthed(props: { pid: string; uid: string }) {
                     { value: "Email", title: "Email" },
                   ],
                 }}
-                initialValue={"start editing"}
+                value={richTextContent}
                 onEditorChange={(content) => {
-                  setRichTextContent(content)
+                  checkAndSetRichTextContent(content)
                   setBody(htmlToPlainText(content))
                 }}
               />
+              :
+              <div dangerouslySetInnerHTML={{__html: richTextContent}} />
+              }
             </div>
           </div>
         </div>
       )}
-      {editable ? (
-        <div
-          className={`p-2 bg-[#ED1C24] w-[154px] text-xl text-center text-white font-bold cursor-pointer`}
-          onClick={() => {
-            editMode ? handleSave() : setEditMode(true);
-          }}
-        >
-          {editMode ? "Save Post" : "Edit Post"}
-        </div>
-      ) : null}
     </div>
   );
 }
