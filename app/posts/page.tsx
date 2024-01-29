@@ -62,7 +62,6 @@ const Blogs = (props: { uid: string }) => {
   }, []);
 
   const handleCreate = async () => {
-    // setCreatePostDialogOpen(true)
     setIsCreatingPost(true)
     let postID = await createBlog(userData.uid);
     router.push(`/posts/${postID}`);

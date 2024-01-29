@@ -5,7 +5,7 @@ export type ForumType = "announcement" | "question";
 import { Content, JSONContent } from "@tiptap/react";
 import { Timestamp } from "firebase/firestore/lite";
 
-const dateNow = new Date(Date.now()).toDateString()
+export const dateNow = new Date(Date.now()).toDateString()
 
 export interface UserData {
   uid: string;
@@ -40,34 +40,10 @@ export const dummyBlog : Post = {
   id: "",
   uid: "",
   created: dateNow,
-  lastUpdated: dateNow,
+  lastEdited: dateNow,
   title: "New Post",
   textContent: "Start writing your post here!",
   richTextContent: "<p>This is <strong>formatted</strong> text.</p>",
-  // richTextContent: {
-  //   type: 'doc',
-  //   content: [
-  //     {
-  //       type: 'paragraph',
-  //       content: [
-  //         {
-  //           type : 'text',
-  //           text : 'Start writing your post here!'
-  //         }
-  //       ]
-  //     },
-  //     {type: "paragraph"},
-  //     {type: "paragraph"},
-  //     {type: "paragraph"},
-  //     {type: "paragraph"},
-  //     {type: "paragraph"},
-  //     {type: "paragraph"},
-  //     {type: "paragraph"},
-  //     {type: "paragraph"},
-  //     {type: "paragraph"},
-  //     {type: "paragraph"},
-  //   ]
-  // },
   videoUrl: "",
   published: false,
   publishedOn: dateNow,
@@ -79,10 +55,9 @@ export const dummyPost: Post = {
   id: "",
   uid: "",
   created: dateNow,
-  lastUpdated: dateNow,
+  lastEdited: dateNow,
   title: "",
   textContent: "",
-  // richTextContent: {},
   richTextContent: "",
   videoUrl: "",
   published: false,
@@ -95,10 +70,9 @@ export interface Post {
   id: string;
   uid: string;
   created: string;
-  lastUpdated: string;
+  lastEdited: string;
   title: string;
   textContent: string;
-  // richTextContent: JSONContent | undefined | string;
   richTextContent: string | undefined;
   videoUrl?: string;
   published: boolean;

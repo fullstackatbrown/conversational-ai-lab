@@ -5,6 +5,7 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 import {
   Post,
   UserData,
+  dateNow,
   dummyPost,
   dummyUserData,
 } from "@/components/util/types";
@@ -66,7 +67,7 @@ interface PostDataProps {
 }
 
 const PostData = ({ postData, authorData, body }: PostDataProps) => {
-  const published = new Date(postData.created);
+  const lastUpdated = new Date(postData.lastEdited);
   const [readTime, setReadTime] = useState<number>();
 
   useEffect(() => {
@@ -97,7 +98,7 @@ const PostData = ({ postData, authorData, body }: PostDataProps) => {
         <p className="my-0 text-base text-[#6c6c6c]">
           {readTime && readTime + " min read"}{" "}
           <span className="text-xl font-[300]">|</span>{" "}
-          {published.toDateString()}
+          {lastUpdated.toDateString()}
         </p>
         <div>Comment</div>
       </div>
@@ -170,22 +171,6 @@ const MenuBar: React.FC<MenuBarProps> = ({ editMode }) => {
   );
 };
 
-const extensions = [
-  Color.configure({ types: [TextStyle.name, ListItem.name] }),
-  //@ts-ignore
-  TextStyle.configure({ types: [ListItem.name] }),
-  StarterKit.configure({
-    bulletList: {
-      keepMarks: true,
-      keepAttributes: false, // TODO : Making this as `false` becase marks are not preserved when I try to preserve attrs, awaiting a bit of help
-    },
-    orderedList: {
-      keepMarks: true,
-      keepAttributes: false, // TODO : Making this as `false` becase marks are not preserved when I try to preserve attrs, awaiting a bit of help
-    },
-  }),
-];
-
 function PostAuthed(props: { pid: string; uid: string }) {
   const [uid, setUid] = useState<string>(props.uid);
   const [postData, setPostData] = useState<Post>(dummyPost);
@@ -196,12 +181,12 @@ function PostAuthed(props: { pid: string; uid: string }) {
 
   const [title, setTitle] = useState<string>("");
   const [body, setBody] = useState<string>("");
-  // const [richTextContent, setRichTextContent] = useState<JSONContent>();
   const [richTextContent, setRichTextContent] = useState<string>();
 
   useEffect(() => {
     console.log(richTextContent)
   }, [richTextContent])
+
   useEffect(() => {
     setUid(props.uid);
   }, [props.uid]);
@@ -216,7 +201,6 @@ function PostAuthed(props: { pid: string; uid: string }) {
         setAuthorData(userData);
       });
       if (data.uid == uid) {
-        console.log(data.uid);
         setEditable(true);
       }
     });
@@ -226,9 +210,10 @@ function PostAuthed(props: { pid: string; uid: string }) {
     setEditMode(false);
     const updatedPost = {
       ...postData,
-      title: title,
+      title: "testtest",
       textContent: body,
       richTextContent: richTextContent,
+      lastEdited: dateNow,
     };
     updatePost(props.pid, updatedPost);
   };
