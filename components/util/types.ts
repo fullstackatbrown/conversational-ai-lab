@@ -43,7 +43,7 @@ export const dummyBlog : Post = {
   lastEdited: dateNow,
   title: "New Post",
   textContent: "Start writing your post here!",
-  richTextContent: "<p>This is <strong>formatted</strong> text.</p>",
+  richTextContent: "<p>Start writing your post here!</p>",
   videoUrl: "",
   published: false,
   publishedOn: dateNow,

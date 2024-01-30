@@ -153,13 +153,11 @@ const Blogs = (props: { uid: string }) => {
         uid && userData.role != 'reader' ? (
           <div className="w-full text-right pr-[100px] mt-10">
             <button
-              className="rounded-full lg:rounded-none text-white transition-all duration-500 font-bold px-3 lg:py-3 py-1 bg-[#AE2C27]"
+              className="text-white transition-all duration-500 font-bold px-3 py-1 bg-[#AE2C27]"
               onClick={handleCreate}
             >
               <div className="flex flex-row lg:gap-2 items-center justify-center">
-                <div className="md:w-full md:scale-100 scale-0 w-0 pt-[0.1rem]">
-                  {isCreatingPost ? "Creating ..." : "Create Post"}
-                </div>
+                {isCreatingPost ? "Creating ..." : "Create Post"}
                 <img src="/assets/add-post.svg" />
               </div>
             </button>
@@ -229,9 +227,9 @@ const BlogComponent = ({ blog }: BlogComponentProps) => {
   const router = useRouter();
   return (
     <div className="mt-5 mx-10 p-10 md:flex gap-10 hover:bg-gray-100"
-      onClick = {() => {
+      onClick={() => {
         router.push(`/posts/${blog.id}`)
-      }} 
+      }}
     >
       <div className="flex-1 h-full ">
         <h1 className="mb-2 font-semibold lg:text-4xl text-3xl text-left">

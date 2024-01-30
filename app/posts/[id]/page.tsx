@@ -84,20 +84,20 @@ const PostData = ({ postData, authorData, body }: PostDataProps) => {
           src={authorData.profileUrl}
           alt=""
         />
-        <div className="flex flex-col">
-          <h2 className="mt-1 text-lg font-semibold">
+        <div className="flex flex-col justify-center">
+          <div className="text-lg font-semibold">
             {authorData.firstName
               ? authorData.firstName + " " + authorData.lastName
               : authorData.userName}
-          </h2>
-          <h2 className="m-0 text-base text-[#6c6c6c]">{authorData.role}</h2>
+          </div>
+          <div className="text-base text-[#6c6c6c]">{authorData.role}</div>
         </div>
       </div>
       <hr className="w-full h-1 mt-[21px]" />
       <div className="flex flex-row justify-between my-[14px] mx-[60px]">
         <p className="my-0 text-base text-[#6c6c6c]">
-          {readTime && readTime + " min read"}{" "}
-          <span className="text-xl font-[300]">|</span>{" "}
+          {readTime && readTime + " min read "}{" "}
+          <span className="text-xl font-[200]">|</span>{" "}
           {lastUpdated.toDateString()}
         </p>
         <div>Comment</div>
@@ -171,8 +171,12 @@ const MenuBar: React.FC<MenuBarProps> = ({ editMode }) => {
   );
 };
 
-function PostAuthed(props: { pid: string; uid: string }) {
-  const [uid, setUid] = useState<string>(props.uid);
+interface PostAuthedProps {
+  pid: string;
+  uid: string;
+}
+
+function PostAuthed({ pid, uid }: PostAuthedProps) {
   const [postData, setPostData] = useState<Post>(dummyPost);
   const [authorData, setAuthorData] = useState<UserData>(dummyUserData);
   const [editable, setEditable] = useState<boolean>(false);
@@ -188,11 +192,7 @@ function PostAuthed(props: { pid: string; uid: string }) {
   }, [richTextContent])
 
   useEffect(() => {
-    setUid(props.uid);
-  }, [props.uid]);
-
-  useEffect(() => {
-    getPostData(props.pid).then((data: Post) => {
+    getPostData(pid).then((data: Post) => {
       setPostData(data);
       setTitle(data.title);
       setBody(data.textContent);
@@ -215,12 +215,12 @@ function PostAuthed(props: { pid: string; uid: string }) {
       richTextContent: richTextContent,
       lastEdited: dateNow,
     };
-    updatePost(props.pid, updatedPost);
+    updatePost(pid, updatedPost);
   };
-  
-  function checkAndSetRichTextContent(newContent : string){
-    if(newContent != ""){
-    setRichTextContent(newContent)
+
+  function checkAndSetRichTextContent(newContent: string) {
+    if (newContent != "") {
+      setRichTextContent(newContent)
     } else {
       setRichTextContent(" ");
     }
@@ -238,7 +238,7 @@ function PostAuthed(props: { pid: string; uid: string }) {
       </div>
       <div className="mt-[60px] mb-[58px] my-0">
         {editMode ? (
-          <div className="flex">
+          <div className="flex ">
             <div className="flex items-center border-r-2 mr-2">
               <p className="text-lg mr-2 text-gray-500 "> Title</p>
             </div>
@@ -257,21 +257,21 @@ function PostAuthed(props: { pid: string; uid: string }) {
             {title}
           </h1>
         )}
+        {editable && (
+          <div>
+            <button
+              className={`mt-2.5 p-2 bg-[#ED1C24] w-[154px] text-xl text-center text-white font-bold `}
+              onClick={() => {
+                editMode ? handleSave() : setEditMode(true);
+              }}
+            >
+              {editMode ? "Save Post" : "Edit Post"}
+            </button>
+            {/* TODO: UPLOAD IMAGE */}
+          </div>
+        )}
       </div>
       <PostData body={body} postData={postData} authorData={authorData} />
-      {editable && (
-        <div>
-        <button
-          className={`mt-2.5 p-2 bg-[#ED1C24] w-[154px] text-xl text-center text-white font-bold `}
-          onClick={() => {
-            editMode ? handleSave() : setEditMode(true);
-          }}
-        >
-          {editMode ? "Save Post" : "Edit Post"}
-        </button>
-        {/* TODO: UPLOAD IMAGE */}
-        </div>
-      )}
       {richTextContent && (
         <div
           className={"mt-5 mb-20 " + editMode ? "" : ""}
@@ -285,29 +285,29 @@ function PostAuthed(props: { pid: string; uid: string }) {
             )}
             <div className="flex-1">
               {
-                editMode ? 
-              <Editor
-                apiKey="m3k4ttny70qcb0w63mv6hqr47xwiyl9gxyzq1qr4rrv6bsbd"
-                init={{
-                  plugins:
-                    "",
-                  toolbar:
-                    "undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | align lineheight | tinycomments | checklist numlist bullist indent outdent | emoticons charmap | removeformat",
-                  tinycomments_mode: "embedded",
-                  tinycomments_author: "Author name",
-                  mergetags_list: [
-                    { value: "First.Name", title: "First Name" },
-                    { value: "Email", title: "Email" },
-                  ],
-                }}
-                value={richTextContent}
-                onEditorChange={(content) => {
-                  checkAndSetRichTextContent(content)
-                  setBody(htmlToPlainText(content))
-                }}
-              />
-              :
-              <div dangerouslySetInnerHTML={{__html: richTextContent}} />
+                editMode ?
+                  <Editor
+                    apiKey="m3k4ttny70qcb0w63mv6hqr47xwiyl9gxyzq1qr4rrv6bsbd"
+                    init={{
+                      plugins:
+                        "",
+                      toolbar:
+                        "undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | align lineheight | tinycomments | checklist numlist bullist indent outdent | emoticons charmap | removeformat",
+                      tinycomments_mode: "embedded",
+                      tinycomments_author: "Author name",
+                      mergetags_list: [
+                        { value: "First.Name", title: "First Name" },
+                        { value: "Email", title: "Email" },
+                      ],
+                    }}
+                    value={richTextContent}
+                    onEditorChange={(content) => {
+                      checkAndSetRichTextContent(content)
+                      setBody(htmlToPlainText(content))
+                    }}
+                  />
+                  :
+                  <div dangerouslySetInnerHTML={{ __html: richTextContent }} />
               }
             </div>
           </div>
