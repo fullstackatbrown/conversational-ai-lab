@@ -58,8 +58,8 @@ function Home() {
       <div className="flex flex-row flex-1">
         <div className="flex-auto flex items-center w-8/12">
           <div className='px-[20px] md:px-[70px] space-y-3'>
-            <h1 className="lg:text-6xl text-4xl font-bold">About</h1>
-            <div className="w-3/4 lg:text-2xl text-lg">Conversational AI based on large language models (LLMs), such as ChatGPT, has ignited widespread interest. The combination of LLMs with such utilities as LlamaIndex and LangChain has made it possible to create conversational interfaces to document sets, datasets, and structured data repositories. We aim to study and research in these areas.</div>
+            <h1 className="lg:text-6xl text-5xl font-bold">About</h1>
+            <div className="w-3/4 lg:text-3xl text-lg">Welcome to the Conversational AI Lab. Our goal in creating the Lab and this website is to launch a forum where students, faculty, and staff at Brown University (and someday maybe beyond) can share their work and discoveries in Conversational AI.</div>
             <div className="group flex lg:w-1/3  w-auto gap-1 items-center cursor-pointer">
               <p
                 className="w-auto lg:text-xl font-bold text-lg group-hover:text-red-500 group-hover:underline underline-offset-4"
