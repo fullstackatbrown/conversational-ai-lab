@@ -5,7 +5,9 @@ import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import Image from "next/image"
 
-import photo from "../public/assets/logo.png";
+// import photo from "../public/assets/logo.png";
+import logo_short from "../public/assets/logo_short.svg"
+import logo_long from "../public/assets/logo_long.svg"
 import { useRouter } from "next/navigation";
 
 // placeholder links below for testing
@@ -34,6 +36,7 @@ interface NavbarProps {
 
 export default function Navbar({ uid, profileUrl, handleSignIn, handleSignOut }: NavbarProps) {
     const router = useRouter();
+
     return (
         // can change font by adding font (e.g. "font-serif") to className in next line
         <Disclosure as="nav" className="bg-gray-200 px-12">
@@ -56,10 +59,15 @@ export default function Navbar({ uid, profileUrl, handleSignIn, handleSignOut }:
                             </div>
                             <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
                                 <div className="flex flex-shrink-0 items-center cursor-pointer"
-                                    onClick={() => router.push("./")}>
+                                    onClick={() => router.push("/")}>
                                     <Image
-                                        className="h-44 w-auto py-5"
-                                        src={photo}
+                                        className="lg:block hidden h-24 w-auto py-5"
+                                        src={logo_long}
+                                        alt="Brown Conversational AI Lab Logo"
+                                    />
+                                    <Image
+                                        className="lg:hidden visible h-24 w-auto py-5"
+                                        src={logo_short}
                                         alt="Brown Conversational AI Lab Logo"
                                     />
                                 </div>
@@ -92,7 +100,7 @@ export default function Navbar({ uid, profileUrl, handleSignIn, handleSignOut }:
                                             <span className="sr-only">Open user menu</span>
                                             <img
                                                 className="h-8 w-8 rounded-full"
-                                                rel="noreferrer noopener"
+                                                referrerPolicy="no-referrer"
                                                 src={profileUrl}
                                                 alt=""
                                             />
@@ -111,13 +119,13 @@ export default function Navbar({ uid, profileUrl, handleSignIn, handleSignOut }:
                                             <Menu.Item>
                                                 {({ active }) => (
                                                     <button
-                                                        onClick={() => router.push("/editProfile")}
+                                                        onClick={() => router.push(`/user/${uid}`)}
                                                         className={classNames(
                                                             active ? "bg-gray-100" : "",
                                                             "w-full text-left block px-4 py-2 text-sm text-gray-700"
                                                         )}
                                                     >
-                                                        Edit Profile
+                                                        View Profile
                                                     </button>
                                                 )}
                                             </Menu.Item>

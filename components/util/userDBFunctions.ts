@@ -1,6 +1,7 @@
 import { UserData } from "./types";
 import { db } from "@/firebaseClient";
 import { collection, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
+import { Timestamp } from "firebase/firestore";
 
 export const getUserData = async (uid: string): Promise<UserData> => {
   const ref = doc(db, "users", uid);
@@ -27,8 +28,8 @@ export const createUserDBEntry = async (
       uid: uid,
       email: email,
       userName: email.split("@")[0],
-      joined: new Date(),
-      lastLogin: new Date(),
+      joined: Timestamp.now(),
+      lastLogin: Timestamp.now(),
       role: role,
       postIds: [],
       profileUrl: profileUrl
@@ -37,7 +38,7 @@ export const createUserDBEntry = async (
     });
   } else {
     await updateDoc(ref, {
-      lastLogin: new Date(),
+      lastLogin: new Date(Date.now()).toDateString(),
     });
   }
 };
