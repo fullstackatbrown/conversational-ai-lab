@@ -13,12 +13,12 @@ import { useRouter } from "next/navigation";
 // placeholder links below for testing
 const navigation = [
     { name: "About", href: "/about/", current: false },
-    {
-        name: "Our Team",
-        href: "https://nextjs.org/learn/basics/navigate-between-pages/link-component",
-        current: false,
-    },
-    { name: "Forum", href: "#", current: false },
+    // {
+    //     name: "Our Team",
+    //     href: "https://nextjs.org/learn/basics/navigate-between-pages/link-component",
+    //     current: false,
+    // },
+    // { name: "Forum", href: "#", current: false },
     { name: "Blog", href: "/posts/", current: false },
 ];
 
