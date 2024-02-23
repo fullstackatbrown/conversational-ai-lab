@@ -1,9 +1,10 @@
 'use client'
 import Navbar from "../components/Navbar"
 import { useEffect, useState } from 'react'
-import { GoogleAuthProvider, getAuth, onAuthStateChanged, signInWithRedirect, getRedirectResult } from 'firebase/auth';
+import { GoogleAuthProvider, getAuth, onAuthStateChanged, signInWithRedirect, getRedirectResult, signInWithPopup } from 'firebase/auth';
 import { firebaseApp } from '@/firebaseClient';
 import { createUserDBEntry } from '@/components/util/userDBFunctions';
+import { AnyARecord } from "dns";
 
 export default function PageShell(props: { uid: string, setUid: (newUid: string) => void, children: React.ReactNode }) {
     const uid = props.uid
@@ -39,7 +40,11 @@ const Home = (props: { uid: string, email: string | null, profileUrl: string, ch
     const provider = new GoogleAuthProvider();
 
     async function handleSignIn() {
-        await signInWithRedirect(auth, provider);
+        await signInWithPopup(auth, provider)
+            .catch((error: any) => {
+                console.warn("Google authentication error--", error);
+                return;
+        });
         const result = await getRedirectResult(auth);
     }
 
