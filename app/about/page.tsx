@@ -1,7 +1,7 @@
 'use client'
 import { db } from "../../firebaseClient";
 import { collection, doc, getDoc } from "firebase/firestore";
-import { useState, useEffect } from "react";
+import { useState, useEffect, ReactElement } from "react";
 import PageShell from "@/components/PageShell";
 // import { postPlayer } from "@/components/util/makePlayer";
 
@@ -14,7 +14,42 @@ export default function About() {
     )
 }
 
+type Image = {
+    caption: string;
+    file_name: string;
+}
+
+const img1: Image = {
+    caption: "us in 2029 with the first singing conversational ai robot",
+    file_name: "robot.png",
+};
+const img2: Image = {
+    caption: "practicing conversations with ai",
+    file_name: "talking.jpg",
+};
+const img3: Image = {
+    caption: "wow the cit sure is beautiful this time of year",
+    file_name: "thomas-j-watson-sr-center-for-information-technology-of-brown-university-at-115-waterman-street-at-brook-street-in-college-hill-providence-rhode-2H6FY5X.jpg",
+};
+
+var images: Image[];
+images = [
+    img1,
+    img2,
+    img3,
+]
+
 const Home = () => {
+    let images_section: ReactElement[] = [];
+    images.forEach((image, index) => {
+        images_section.push(
+            <div className="px-10 py-5">
+                <img src={`/assets/about/${image.file_name}`} width={"800px"} height={"800px"} />
+                <div className="px-5 py-2 transition-all duration-300 w-full lg:text-l text-lg">{image.caption}</div>
+            </div>
+        );
+    });
+
     return (
         <div>
             <div className="bg-[#9A9A9A] flex flex-col items-center justify-center w-full h-[200px]">
@@ -23,7 +58,7 @@ const Home = () => {
                 </div>
             </div>
             <div className="lg:flex lg:gap-10">
-                <div className=" px-10 py-10 lg:px-20 lg:py-20 space-y-6 lg:w-1/2 w-full flex flex-col justify-center">
+                <div className=" px-10 py-10 lg:px-20 lg:py-15 space-y-6 lg:w-1/2 w-full flex flex-col justify-top">
                     <h1 className="transition-all duration-300 lg:text-4xl text-4xl font-bold">Who We Are</h1>
                     <div className="transition-all duration-300 w-full lg:text-2xl text-lg">Welcome to the Conversational AI Lab. Our goal in creating the Lab and this website is to launch a forum where students, faculty, and staff at Brown University (and someday maybe beyond) can share their work and discoveries in Conversational AI.</div>
 
@@ -39,10 +74,17 @@ const Home = () => {
                     <div className="transition-all duration-300 w-full lg:text-2xl text-lg">Now, for the first time we have created computational engines such that we can get them to perform computational tasks not by giving them detailed instructions on how to execute the tasks and not by  explicitly defining the tasks (as in declarative programming) but simply by specifying the tasks, sometimes supplemented with examples of successful execution of such tasks.</div>
                     <div className="transition-all duration-300 w-full lg:text-2xl text-lg">The purpose of the Conversational AI Lab is to explore all the amazing tasks that can be performed by these family of computational engines and to extend the capacities of these computational engines through research and engineering. We hope you’ll join us. We plan to hold events every few weeks where one or more presenters will showcase something cool and interesting that can be done using conversational AI.</div>
                 </div>
-                    
+
+                
                 <div className="transition-all duration-300 scale-0 lg:scale-100 transform-scale-y-[-1]">
-                    <img src="/assets/wave.png" width={"800px"}
+                    <div className="px-10 py-2"></div>
+
+                    <img src="/assets/about/wave.png" width={"800px"}
                         height={"800px"} />
+                    
+                    <div className="px-10 py-20"></div>
+                    
+                    {images_section}
                 </div>
             </div>
         </div>

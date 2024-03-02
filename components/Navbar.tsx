@@ -15,7 +15,12 @@ const navigation = [
     { name: "About", href: "/about/", current: false },
     {
         name: "Our Team",
-        href: "https://nextjs.org/learn/basics/navigate-between-pages/link-component",
+        href: "/team/",
+        current: false,
+    },
+    {
+        name: "Activities",
+        href: "/activities/",
         current: false,
     },
     { name: "Forum", href: "#", current: false },
