@@ -24,7 +24,7 @@ const Home = () => {
             </div>
             <div className="lg:flex lg:gap-10">
                 <div className=" px-10 py-10 lg:px-20 lg:py-20 space-y-6 lg:w-1/2 w-full flex flex-col justify-center">
-                    <h1 className="transition-all duration-300 lg:text-4xl text-4xl font-bold">Who We Are</h1>
+                    <h1 className="transition-all duration-300 lg:text-4xl text-4xl font-bold">Our Mission</h1>
                     <div className="transition-all duration-300 w-full lg:text-2xl text-lg">Welcome to the Conversational AI Lab. Our goal in creating the Lab and this website is to launch a forum where students, faculty, and staff at Brown University (and someday maybe beyond) can share their work and discoveries in Conversational AI.</div>
 
                     <br></br>
