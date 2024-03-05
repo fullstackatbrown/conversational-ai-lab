@@ -20,22 +20,22 @@ type User = {
 }
 
 const tim: User = {
-    name: "tim",
+    name: "Tim",
     bio: "This is Tim, tims been on the team a long time so we love tim. I think he's interested in conversational AI or something",
 };
 
 const sally: User = {
-    name: "sally",
+    name: "Sally",
     bio: "This is Sally, she's a big name in the industry so we're so excited to have her on the team!",
 };
 
 const dan: User = {
-    name: "dan",
+    name: "Dan",
     bio: "This is Dan, i don't know dan very well but he seems pretty chill.",
 };
 
 const allison: User = {
-    name: "allison",
+    name: "Allison",
     bio: "This is Allison, she's not as much of a fan of converstional AI as Tim, but she's more of a fan than Sally.",
 };
 
@@ -53,14 +53,23 @@ const Home = () => {
 
     // loop through each user to create the user section
     users.forEach((user, index) => {
-        let img = (
-            //<div className="">
-                <img src={`assets/team/${user.name}.jpg`} width={"400px"} height={"400px"} />
-            //</div>
-        );
+        let img = (<img src={`assets/team/${user.name}.jpg`} width={"400px"} height={"400px"} />);
         let bio = (
             <div className="justify-left flex w-1/2">
-                <div className="transition-all duration-300 w-full lg:text-2xl text-lg flex items-center">{user.bio}</div>
+                
+                {/* <div className="transition-all duration-300 w-full lg:text-2xl text-lg flex items-center">
+                    {user.name}<br></br>
+                    {user.bio}
+                </div> */}
+                <div className="transition-all duration-300 w-full flex items-center">
+                    <div className="">
+                        <div className="lg:text-2xl text-lg font-bold">{user.name}</div>
+                        <div className="lg:text-2xl text-lg">{user.bio}</div>
+                    </div>
+                </div>
+                {/* <div className="transition-all duration-300 w-full lg:text-2xl text-lg flex items-center">
+                    {user.bio}
+                </div> */}
             </div>
         );
 

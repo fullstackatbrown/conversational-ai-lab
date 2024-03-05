@@ -31,6 +31,8 @@ const Home = () => {
                 </div>
                     
                 <div className="transition-all duration-300 scale-0 lg:scale-100 transform-scale-y-[-1]">
+                    <div className="px-10 py-2"></div>
+
                     <img src="/assets/wave.png" width={"800px"}
                         height={"800px"} />
                 </div>
