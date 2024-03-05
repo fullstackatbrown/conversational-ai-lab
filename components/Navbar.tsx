@@ -23,7 +23,7 @@ const navigation = [
         href: "/activities/",
         current: false,
     },
-    { name: "Forum", href: "#", current: false },
+    //{ name: "Forum", href: "#", current: false },
     { name: "Blog", href: "/posts/", current: false },
 ];
 
