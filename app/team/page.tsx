@@ -101,7 +101,14 @@ const Home = () => {
 
             </div>
             
-            <div>{users_section}</div>
+            {/* <div>{users_section}</div> */}
+            <div className="lg: center lg:gap-10 flex flex-row px-10 py-10 justify-center">
+                <div className="transition-all duration-300 w-full items-center">
+                    <div className="">
+                        <div className="lg:text-2xl text-lg text-center">Check back here to get to know our team!</div>
+                    </div>
+                </div>
+            </div>
             
         </div>
     )
