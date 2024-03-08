@@ -210,7 +210,7 @@ function PostAuthed({ pid, uid }: PostAuthedProps) {
     setEditMode(false);
     const updatedPost = {
       ...postData,
-      title: "testtest",
+      title: title,
       textContent: body,
       richTextContent: richTextContent,
       lastEdited: dateNow,
