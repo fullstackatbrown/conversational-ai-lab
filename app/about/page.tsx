@@ -19,15 +19,15 @@ type Image = {
 }
 
 const img1: Image = {
-    caption: "ENIAC: some BS about the first computer ever made. It was big and clunky and stuff.",
+    caption: "ENIAC: The first programmable computer",
     file_name: "ENIAC.jpeg",
 };
 const img2: Image = {
-    caption: "UNIVAC: some BS about the second computer ever made. It was big and clunky and stuff.",
+    caption: "UNIVAC: The successor to the ENIAC",
     file_name: "UNIVAC.jpeg",
 };
 const img3: Image = {
-    caption: "Chat GPT: Worse than Github Copilot, but still pretty cool.",
+    caption: "Chat GPT: The new standard for Conversational AI",
     file_name: "GPT.png",
 };
 
