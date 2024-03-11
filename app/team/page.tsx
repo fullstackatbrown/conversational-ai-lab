@@ -100,9 +100,9 @@ const Home = () => {
 
     return (
         <div>
-            <div className="bg-[#4D81ED] flex flex-col items-center justify-center w-full h-[200px]">
+            <div className="bg-[#4D81ED] flex flex-col items-center justify-center w-full h-[150px] lg:h-[200px]">
                 <div className="text-left w-full px-10 lg:px-[150px]">
-                    <h1 className="lg:text-5xl text-4xl text-white">Our Team</h1>
+                    <h1 className="lg:text-6xl text-4xl text-white">Our Team</h1>
                 </div>
             </div>
             <div className="py-2.5">
