@@ -5,8 +5,8 @@ import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import Image from "next/image"
 
-// import photo from "../public/assets/logo.png";
-import logo_short from "../public/assets/logo_short.svg"
+import logo_short from "../public/assets/logo_short.png"
+// import logo_short from "../public/assets/logo_short.svg"
 import logo_long from "../public/assets/logo_long.svg"
 import { useRouter } from "next/navigation";
 
