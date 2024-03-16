@@ -45,6 +45,7 @@ export const dummyBlog : Post = {
   textContent: "Start writing your post here!",
   richTextContent: "<p>Start writing your post here!</p>",
   videoUrl: "",
+  coverImage: "",
   published: false,
   publishedOn: dateNow,
   publishedBy: "",
@@ -60,6 +61,7 @@ export const dummyPost: Post = {
   textContent: "",
   richTextContent: "",
   videoUrl: "",
+  coverImage: "",
   published: false,
   publishedOn: dateNow,
   publishedBy: "",
@@ -75,6 +77,7 @@ export interface Post {
   textContent: string;
   richTextContent: string | undefined;
   videoUrl?: string;
+  coverImage?: string;
   published: boolean;
   publishedOn?: string;
   publishedBy?: string;
