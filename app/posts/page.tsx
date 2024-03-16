@@ -144,14 +144,14 @@ const Blogs = (props: { uid: string }) => {
           </Transition.Child>
         </Dialog>
       </Transition>
-      <div className="bg-[#9A9A9A] flex flex-col items-center justify-center w-full h-[200px]">
+      <div className="bg-[#AE2C27] flex flex-col items-center justify-center w-full h-[150px] lg:h-[200px]">
         <div className="text-left w-full px-10 lg:px-[150px]">
-          <h1 className="lg:text-5xl text-4xl text-white">Blog</h1>
+          <h1 className="lg:text-6xl text-4xl text-white">Blog</h1>
         </div>
       </div>
       {
         uid && userData.role != 'reader' ? (
-          <div className="w-full text-right pr-[100px] mt-10">
+          <div className="flex justify-center lg:justify-end w-full text-right lg:pr-[100px] mt-10">
             <button
               className="text-white transition-all duration-500 font-bold px-3 py-1 bg-[#AE2C27]"
               onClick={handleCreate}

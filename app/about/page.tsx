@@ -39,14 +39,14 @@ const Home = () => {
         images_section.push(
             <div className="px-10 py-20">
                 <img src={`/assets/about/${image.file_name}`} width={"800px"} height={"800px"} />
-                <div className="italic border-2 border-double border-blue-500 mt-1 px-5 py-2 w-full lg:text-lg text-lg">{image.caption}</div>
+                <div className="text-center italic mt-1 px-5 py-2 w-full lg:text-lg text-lg">{image.caption}</div>
             </div>
         );
     });
 
     return (
         <div>
-            <div className="bg-[#9A9A9A] flex flex-col items-center justify-center w-full h-[200px]">
+            <div className="bg-amber-700 flex flex-col items-center justify-center w-full h-[150px] lg:h-[200px]">
                 <div className="text-left w-full px-10 lg:px-[150px]">
                     <h1 className="lg:text-6xl text-4xl text-white">About Us</h1>
                 </div>
