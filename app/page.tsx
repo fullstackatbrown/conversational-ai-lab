@@ -19,7 +19,7 @@ export default function HomePage() {
 }
 
 function Home() {
-  const subText = ["The ", "Conversational ", "AI ", "Lab ", "at ", "Brown "]
+  const subText = ["Conversational ", "AI ", "Lab ", "at ", "Brown "]
   const [subTextIndex, setSubTextIndex] = useState<number>(0);
   const [titleSubText, setTitleSubtext] = useState<String>("");
   const [isBlinking, setIsBlinking] = useState<String>("");
@@ -49,7 +49,7 @@ function Home() {
       <div className="flex flex-row flex-1">
         <div className="flex-auto flex items-center w-8/12 ">
           <div className='px-[20px] md:px-[70px] mb-[100px] space-y-3'>
-            <h1 className="lg:text-6xl text-4xl font-bold">Welcome to</h1>
+            <h1 className="lg:text-6xl text-4xl font-bold">Welcome to the</h1>
             <div className="w-132 h-24 flex flex-col items-start gap-2">
               <div className="text-[#D292FF] lg:text-5xl pl-1 text-2xl font-semibold">
                 {titleSubText}
