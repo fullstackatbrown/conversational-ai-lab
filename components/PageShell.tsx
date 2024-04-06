@@ -44,7 +44,7 @@ const Home = (props: { uid: string, email: string | null, profileUrl: string, ch
             .catch((error: any) => {
                 console.warn("Google authentication error--", error);
                 return;
-        });
+            });
         const result = await getRedirectResult(auth);
     }
 

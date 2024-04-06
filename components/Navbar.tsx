@@ -5,27 +5,11 @@ import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import Image from "next/image"
 
-// import photo from "../public/assets/logo.png";
-import logo_short from "../public/assets/logo_short.svg"
+import logo_short from "../public/assets/logo_short.png"
+// import logo_short from "../public/assets/logo_short.svg"
 import logo_long from "../public/assets/logo_long.svg"
 import { useRouter } from "next/navigation";
 
-// placeholder links below for testing
-const navigation = [
-    { name: "About", href: "/about/", current: false },
-    {
-        name: "Our Team",
-        href: "/team/",
-        current: false,
-    },
-    {
-        name: "Activities",
-        href: "/activities/",
-        current: false,
-    },
-    //{ name: "Forum", href: "#", current: false },
-    { name: "Blog", href: "/posts/", current: false },
-];
 
 
 function classNames(...classes: string[]) {
@@ -37,10 +21,27 @@ interface NavbarProps {
     profileUrl: string;
     handleSignIn: () => void;
     handleSignOut: () => void;
+    currentPage?: "home" | "about" | "team" | "activities" | "blog";
 }
 
 export default function Navbar({ uid, profileUrl, handleSignIn, handleSignOut }: NavbarProps) {
     const router = useRouter();
+
+    // placeholder links below for testing
+    const navigation = [
+        { name: "About", href: "/about/", current: false },
+        {
+            name: "Our Team",
+            href: "/team/",
+            current: false,
+        },
+        {
+            name: "Activities",
+            href: "/activities/",
+            current: false,
+        },
+        { name: "Blog", href: "/posts/", current: false },
+    ];
 
     return (
         // can change font by adding font (e.g. "font-serif") to className in next line
@@ -49,7 +50,7 @@ export default function Navbar({ uid, profileUrl, handleSignIn, handleSignOut }:
                 <>
                     {/* below originally had max-w-7xl */}
                     <div className="mx-auto px-2 sm:px-6 lg:px-8">
-                        <div className="relative flex h-20 items-center justify-between">
+                        <div className="relative flex h-24 items-center justify-between">
                             <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
                                 {/* Mobile menu button*/}
                                 <Disclosure.Button className="relative inline-flex items-center justify-center rounded-md p-2 text-black hover:bg-gray-300 hover:text-black focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
@@ -66,7 +67,7 @@ export default function Navbar({ uid, profileUrl, handleSignIn, handleSignOut }:
                                 <div className="flex flex-shrink-0 items-center cursor-pointer"
                                     onClick={() => router.push("/")}>
                                     <Image
-                                        className="lg:block hidden h-24 w-auto py-5"
+                                        className="lg:block hidden h-[125px] w-auto py-5"
                                         src={logo_long}
                                         alt="Brown Conversational AI Lab Logo"
                                     />
@@ -86,9 +87,9 @@ export default function Navbar({ uid, profileUrl, handleSignIn, handleSignOut }:
                                                 href={item.href}
                                                 className={classNames(
                                                     item.current
-                                                        ? "bg-gray-900 text-black"
+                                                        ? "bg-red-500 text-black"
                                                         : "text-black hover:bg-gray-300 hover:text-black",
-                                                    "rounded-md px-3 py-2 text-sm font-medium"
+                                                    "rounded-md px-3 py-2 text-lg font-medium"
                                                 )}
                                                 aria-current={item.current ? "page" : undefined}
                                             >
@@ -98,13 +99,13 @@ export default function Navbar({ uid, profileUrl, handleSignIn, handleSignOut }:
                                     </div>
                                 </div>
                                 {/* Profile dropdown */}
-                                {uid != "" ? (<Menu as="div" className="relative ml-4">
+                                {uid != "" ? (<Menu as="div" className="relative ml-[35px]">
                                     <div>
                                         <Menu.Button className="ml-2 relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                                             <span className="absolute -inset-1.5" />
                                             <span className="sr-only">Open user menu</span>
                                             <img
-                                                className="h-8 w-8 rounded-full"
+                                                className="h-12 w-12 rounded-full"
                                                 referrerPolicy="no-referrer"
                                                 src={profileUrl}
                                                 alt=""
@@ -164,7 +165,7 @@ export default function Navbar({ uid, profileUrl, handleSignIn, handleSignOut }:
                                     </Transition>
                                 </Menu>) : (
                                     <button
-                                        className="text-sm px-3 ml-5 font-bold bg-green-300 p-2 rounded-full"
+                                        className="text-lg px-3 ml-5 font-bold bg-green-300 p-2 rounded-full"
                                         onClick={handleSignIn}>Log in
                                     </button>)}
                             </div>
