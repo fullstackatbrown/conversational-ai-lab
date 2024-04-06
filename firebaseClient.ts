@@ -24,5 +24,4 @@ export let firebaseApp: FirebaseApp;
 firebaseApp = initializeApp(firebaseConfig);
 
 export const db = getFirestore(firebaseApp);
-
 export const storage = getStorage(firebaseApp);

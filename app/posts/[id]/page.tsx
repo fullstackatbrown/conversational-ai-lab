@@ -283,7 +283,6 @@ function PostAuthed({ pid, uid }: PostAuthedProps) {
             </h1>
             )}
 
-
         {editMode ? (
           <div className="flex ">
             <div className="flex items-center border-r-2 mr-2">

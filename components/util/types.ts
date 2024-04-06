@@ -5,6 +5,7 @@ export type ForumType = "announcement" | "question";
 import { Content, JSONContent } from "@tiptap/react";
 import { Timestamp } from "firebase/firestore/lite";
 
+
 export const dateNow = new Date(Date.now()).toDateString()
 
 export interface UserData {
@@ -77,7 +78,7 @@ export interface Post {
   textContent: string;
   richTextContent: string | undefined;
   videoUrl?: string;
-  coverImage?: string;
+  coverImage?: string; 
   published: boolean;
   publishedOn?: string;
   publishedBy?: string;
