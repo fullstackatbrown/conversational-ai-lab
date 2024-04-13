@@ -145,7 +145,7 @@ const Blogs = (props: { uid: string }) => {
         </Dialog>
       </Transition>
       <div className="bg-[#AE2C27] flex flex-col items-center justify-center w-full h-[150px] lg:h-[200px]">
-        <div className="text-left w-full px-10 lg:px-[150px]">
+        <div className="text-left w-full px-10 md:px-[100px] lg:px-[150px]">
           <h1 className="lg:text-6xl text-4xl text-white">Blog</h1>
         </div>
       </div>
@@ -226,7 +226,7 @@ const BlogComponent = ({ blog }: BlogComponentProps) => {
 
   const router = useRouter();
   return (
-    <div className="mt-5 mx-10 p-10 md:flex gap-10 hover:bg-gray-100"
+    <div className="mt-2.5 mx-5 px-5 py-2.5 md:mt-5 md:mx-10 md:p-10 sm:flex gap-10 hover:bg-gray-100"
       onClick={() => {
         router.push(`/posts/${blog.id}`)
       }}
@@ -251,7 +251,7 @@ const BlogComponent = ({ blog }: BlogComponentProps) => {
       <div className="flex justify-center items-center flex-1">
         <img
           src="https://picsum.photos/500/500"
-          className="mt-2 object-cover w-0 h-0 md:h-[200px] md:w-[500px]"
+          className="mt-5 object-cover object-center h-[200px] w-[300px] md:w-[500px]"
         />
       </div>
     </div>
