@@ -47,11 +47,11 @@ function Home() {
   return (
     <div className="flex flex-col h-[120vh] md:h-[180vh]">
       <div className="flex flex-row flex-1">
-        <div className="flex-auto flex items-center w-8/12 ">
+        <div className="flex-auto flex items-center w-8/12">
           <div className='px-[50px] md:px-[70px] mb-[0px] sm:mb-[30px] md:mb-[100px] space-y-3'>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold">Welcome to</h1>
-            <div className="w-2/5 sm:w-full h-30 md:h-40 lg:h-50 flex flex-col items-start gap-2">
-              <div className="text-[#D292FF] text-3xl md:text-4xl lg:text-5xl pl-1 font-semibold">
+            <div className="w-full h-40 lg:h-50 flex flex-col items-start gap-2">
+              <div className="text-[#D292FF] text-xl md:text-4xl lg:text-5xl pl-1 font-semibold">
                 {titleSubText}
                 <div className={`inline-block w-4 h-4 md:w-5 md:h-5 lg:w-7 lg:h-7 rounded-full bg-[#D292FF] min-h-1 ${isBlinking}`} />
               </div>
