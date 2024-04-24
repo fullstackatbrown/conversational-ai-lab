@@ -19,7 +19,7 @@ export default function HomePage() {
 }
 
 function Home() {
-  const subText = ["The ", "Conversational ", "AI ", "Lab ", "at ", "Brown "]
+  const subText = ["Conversational ", "AI ", "Lab ", "at ", "Brown "]
   const [subTextIndex, setSubTextIndex] = useState<number>(0);
   const [titleSubText, setTitleSubtext] = useState<String>("");
   const [isBlinking, setIsBlinking] = useState<String>("");
