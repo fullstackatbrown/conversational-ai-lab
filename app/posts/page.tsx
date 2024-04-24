@@ -250,7 +250,8 @@ const BlogComponent = ({ blog }: BlogComponentProps) => {
       </div>
       <div className="flex justify-center items-center flex-1">
         <img
-          src="https://picsum.photos/500/500"
+        //   src="https://picsum.photos/500/500"
+          src={blog.coverImage || "https://picsum.photos/500/500"}
           className="mt-2 object-cover w-0 h-0 md:h-[200px] md:w-[500px]"
         />
       </div>

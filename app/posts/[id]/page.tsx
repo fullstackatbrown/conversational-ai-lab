@@ -31,6 +31,8 @@ import {
 } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { filledInputClasses } from "@mui/material";
+import { storage } from "@/firebaseClient";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
 function EditPost(props: {
   pid: string;
@@ -186,6 +188,7 @@ function PostAuthed({ pid, uid }: PostAuthedProps) {
   const [title, setTitle] = useState<string>("");
   const [body, setBody] = useState<string>("");
   const [richTextContent, setRichTextContent] = useState<string>();
+  const [coverImage, setCoverImage] = useState<string>();
 
   useEffect(() => {
     console.log(richTextContent)
@@ -197,6 +200,7 @@ function PostAuthed({ pid, uid }: PostAuthedProps) {
       setTitle(data.title);
       setBody(data.textContent);
       setRichTextContent(data.richTextContent);
+      setCoverImage(data.coverImage);
       getUserData(data.uid).then((userData: UserData) => {
         setAuthorData(userData);
       });
@@ -208,12 +212,14 @@ function PostAuthed({ pid, uid }: PostAuthedProps) {
 
   const handleSave = () => {
     setEditMode(false);
+    console.log(coverImage)
     const updatedPost = {
       ...postData,
-      title: "testtest",
+      title: title,
       textContent: body,
       richTextContent: richTextContent,
       lastEdited: dateNow,
+      coverImage: coverImage,
     };
     updatePost(pid, updatedPost);
   };
@@ -223,6 +229,24 @@ function PostAuthed({ pid, uid }: PostAuthedProps) {
       setRichTextContent(newContent)
     } else {
       setRichTextContent(" ");
+    }
+  }
+
+  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+    //   setCoverImage(file);
+      const imageRef = ref(storage, `images/${file.name + uid}`);
+      uploadBytes(imageRef, file).then((snapshot) => {
+        getDownloadURL(snapshot.ref).then((url) => {
+          setCoverImage(url);
+          console.log(url);
+          setPostData({
+            ...postData,
+            coverImage: url,
+          });
+        });
+      });
     }
   }
 
@@ -237,6 +261,28 @@ function PostAuthed({ pid, uid }: PostAuthedProps) {
         <p>Back to posts</p>
       </div>
       <div className="mt-[60px] mb-[58px] my-0">
+        {editMode ? (
+            <div className="flex ">
+                <div className="flex items-center border-r-2 mr-2">
+                <p className="text-lg mr-2 text-gray-500 "> Cover image</p>
+                </div>
+                <input
+                className="h-[2.5rem] w-full text-xl font-[500] text-gray-500 outline-none"
+                placeholder="Cover image..."
+                type="file" 
+                onChange={(e) => handleImageChange(e)}
+                />
+            </div>
+            ) : (
+            <h1
+                className="text-4xl font-[700]"
+                onDoubleClick={() => editable && setEditMode(true)}
+            >
+                <img src={coverImage} width={"800px"}
+                        height={"200px"} />
+            </h1>
+            )}
+
         {editMode ? (
           <div className="flex ">
             <div className="flex items-center border-r-2 mr-2">
