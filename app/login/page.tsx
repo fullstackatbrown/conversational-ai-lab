@@ -1,11 +1,10 @@
 "use client";
-import { useState, useEffect } from "react";
+
 import { useRouter } from "next/navigation";
 import { useAuth } from "../../contexts/AuthContext";
 
 export default function Login() {
-  const { user, handleSignIn, handleSignOut } = useAuth();
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const { user, handleSignIn, handleSignOut, loading } = useAuth();
   const router = useRouter();
 
   async function redirectProfile() {
@@ -15,7 +14,7 @@ export default function Login() {
 
   return (
     <div className="flex flex-col gap-5">
-      {isLoading && <div>Loading...</div>}
+      {loading && <div>Loading...</div>}
       <button onClick={() => handleSignIn()}>
         {user ? "Welcome, " + user.email + "!" : "Sign in"}
       </button>

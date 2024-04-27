@@ -87,10 +87,12 @@ export const AuthProvider = (props: AuthProviderProps) => {
           user.email ? user.email : "",
           user.photoURL ? user.photoURL : ""
         );
-        console.log("User signed in");
       } else {
+        setUser(null);
         console.log("User not signed in");
       }
+
+      setLoading(false);
     });
 
     // Unsubscribe from the listener when the component unmounts
