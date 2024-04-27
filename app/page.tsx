@@ -1,8 +1,8 @@
 "use client";
+
 import { ArrowLongRightIcon } from "@heroicons/react/24/outline";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import Navbar from "@/components/Navbar";
 
 export default function HomePage() {
   const subText = ["Conversational ", "AI ", "Lab ", "at ", "Brown "];
@@ -29,7 +29,6 @@ export default function HomePage() {
 
   return (
     <div className="flex flex-col h-[185vh]">
-      <Navbar />
       <div className="flex flex-row flex-1">
         <div className="flex-auto flex items-center w-8/12 ">
           <div className="px-[20px] md:px-[70px] mb-[100px] space-y-3">
