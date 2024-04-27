@@ -1,3 +1,5 @@
+"use client";
+
 import {
   useContext,
   createContext,
@@ -17,7 +19,6 @@ import {
 
 import { firebaseApp } from "@/firebaseClient";
 import { createUserDBEntry } from "@/components/util/userDBFunctions";
-
 import { User } from "firebase/auth";
 
 // Authentication context properties shared with components that subscribe to this context
@@ -30,17 +31,18 @@ interface AuthContextProps {
 }
 
 // Initialize the context
-const AuthContext = createContext<AuthContextProps | undefined>(undefined);
+// NOTE: authentication context should only be accessed through the useAuth hook below
+const AuthContext = createContext<AuthContextProps>({
+  user: null,
+  auth: getAuth(firebaseApp),
+  loading: true,
+  handleSignIn: async () => {},
+  handleSignOut: async () => {},
+});
 
 // Custom hook to use the authentication context
 export const useAuth = () => {
-  const context = useContext(AuthContext);
-
-  if (!context) {
-    throw new Error(
-      "useAuth hook must be used within an AuthProvider component"
-    );
-  }
+  return useContext(AuthContext);
 };
 
 // Create an authentication context provider
@@ -74,6 +76,7 @@ export const AuthProvider = (props: AuthProviderProps) => {
 
   // Set up a listener for authentication state changes
   useEffect(() => {
+    // onAuthStateChanged returns an unsubscribe function that cleans up the listener
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       console.log("User authentication state changed");
 

@@ -5,7 +5,7 @@ export type ForumType = "announcement" | "question";
 import { Content, JSONContent } from "@tiptap/react";
 import { Timestamp } from "firebase/firestore/lite";
 
-export const dateNow = new Date(Date.now()).toDateString()
+export const dateNow = new Date(Date.now()).toDateString();
 
 export interface UserData {
   uid: string;
@@ -33,10 +33,10 @@ export const dummyUserData: UserData = {
   bio: "",
   role: "reader" as UserRole,
   postIds: [],
-  profileUrl: ""
+  profileUrl: "",
 };
 
-export const dummyBlog : Post = {
+export const dummyBlog: Post = {
   id: "",
   uid: "",
   created: dateNow,
@@ -49,7 +49,7 @@ export const dummyBlog : Post = {
   publishedOn: dateNow,
   publishedBy: "",
   postType: "blog",
-}
+};
 
 export const dummyPost: Post = {
   id: "",
@@ -64,7 +64,7 @@ export const dummyPost: Post = {
   publishedOn: dateNow,
   publishedBy: "",
   postType: "forum",
-}
+};
 
 export interface Post {
   id: string;
@@ -96,4 +96,3 @@ export interface CommentContent {
   metaData: CommentMetaData;
   textContent: string;
 }
-

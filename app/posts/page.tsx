@@ -4,23 +4,15 @@ import { UserData, dummyUserData, Post } from "@/components/util/types";
 import { getUserData } from "@/components/util/userDBFunctions";
 import { createBlog, getNPosts } from "@/components/util/postFunctions";
 import { useRouter } from "next/navigation";
-import PageShell from "@/components/PageShell";
 import { QueryDocumentSnapshot } from "firebase/firestore";
 import { DocumentData } from "firebase/firestore";
 import { Transition } from "@headlessui/react";
 import { Dialog } from "@headlessui/react";
+import { useAuth } from "@/contexts/AuthContext";
 
 export default function BlogsPage() {
-  const [uid, setUid] = useState<string>("");
-  return (
-    <PageShell uid={uid} setUid={(newUid) => setUid(newUid)}>
-      <Blogs uid={uid} />
-    </PageShell>
-  );
-}
+  const { user, auth } = useAuth();
 
-const Blogs = (props: { uid: string }) => {
-  const [uid, setUid] = useState<string>("");
   const [userData, setUserData] = useState<UserData>(dummyUserData);
   const [lastSnapShot, setLastDocumentSnapShot] =
     useState<QueryDocumentSnapshot | null>(null);
@@ -29,27 +21,25 @@ const Blogs = (props: { uid: string }) => {
   const [isMore, setIsMore] = useState<boolean>(true);
   const [isCreatingPost, setIsCreatingPost] = useState<boolean>(false);
   const [postsLoading, setPostsLoading] = useState<boolean>(true);
-  const [createPostDialogOpen, setCreatePostDialogOpen] = useState<boolean>(false);
+  const [createPostDialogOpen, setCreatePostDialogOpen] =
+    useState<boolean>(false);
+
   const router = useRouter();
 
   useEffect(() => {
-    setUid(props.uid);
-  }, [props.uid]);
-
-  useEffect(() => {
-    if (uid) {
-      getUserData(props.uid).then((userData: UserData) => {
+    if (user) {
+      getUserData(user.uid).then((userData: UserData) => {
         setUserData(userData);
       });
     }
-  }, [uid]);
+  }, [user]);
 
   useEffect(() => {
-    setPostsLoading(true)
+    setPostsLoading(true);
     getNPosts(5, null).then((posts) => {
-      setPostsLoading(false)
+      setPostsLoading(false);
       if (lastSnapShot) {
-        setIsMore(false)
+        setIsMore(false);
       }
       if (posts) {
         setCurrentPosts(posts.documents);
@@ -62,7 +52,7 @@ const Blogs = (props: { uid: string }) => {
   }, []);
 
   const handleCreate = async () => {
-    setIsCreatingPost(true)
+    setIsCreatingPost(true);
     let postID = await createBlog(userData.uid);
     router.push(`/posts/${postID}`);
   };
@@ -103,7 +93,11 @@ const Blogs = (props: { uid: string }) => {
         leaveFrom="opacity-100"
         leaveTo="opacity-0"
       >
-        <Dialog as="div" className="relative z-10" onClose={() => setCreatePostDialogOpen(false)}>
+        <Dialog
+          as="div"
+          className="relative z-10"
+          onClose={() => setCreatePostDialogOpen(false)}
+        >
           <Transition.Child
             as={Fragment}
             enter="ease-out duration-300"
@@ -125,7 +119,9 @@ const Blogs = (props: { uid: string }) => {
             leaveTo="opacity-0 scale-95"
           >
             <Dialog.Panel className="overflow-hidden mx-auto my-auto w-full max-w-[426px] fixed inset-0 h-[205px] border border-[#6A6A6A] transition-all transform bg-white z-50">
-              <Dialog.Title className="text-[14px] text-center font-[700] mt-6 pt-4 mb-4 px-2">New Blog Post</Dialog.Title>
+              <Dialog.Title className="text-[14px] text-center font-[700] mt-6 pt-4 mb-4 px-2">
+                New Blog Post
+              </Dialog.Title>
               <div className="px-2 text-[14px] text-center">
                 <div className="flex justify-between gap-4 mx-4 mt-10">
                   <button
@@ -137,7 +133,9 @@ const Blogs = (props: { uid: string }) => {
                   <button
                     className="w-[179px] py-2 font-normal text-white text-center bg-[#F24B4B]"
                     onClick={() => setCreatePostDialogOpen(true)}
-                  >Create </button>
+                  >
+                    Create{" "}
+                  </button>
                 </div>
               </div>
             </Dialog.Panel>
@@ -149,54 +147,53 @@ const Blogs = (props: { uid: string }) => {
           <h1 className="lg:text-5xl text-4xl text-white">Blog</h1>
         </div>
       </div>
-      {
-        uid && userData.role != 'reader' ? (
-          <div className="w-full text-right pr-[100px] mt-10">
-            <button
-              className="text-white transition-all duration-500 font-bold px-3 py-1 bg-[#AE2C27]"
-              onClick={handleCreate}
-            >
-              <div className="flex flex-row lg:gap-2 items-center justify-center">
-                {isCreatingPost ? "Creating ..." : "Create Post"}
-                <img src="/assets/add-post.svg" />
-              </div>
-            </button>
-          </div>
-        ) : null
-      }
+      {user && userData.role != "reader" ? (
+        <div className="w-full text-right pr-[100px] mt-10">
+          <button
+            className="text-white transition-all duration-500 font-bold px-3 py-1 bg-[#AE2C27]"
+            onClick={handleCreate}
+          >
+            <div className="flex flex-row lg:gap-2 items-center justify-center">
+              {isCreatingPost ? "Creating ..." : "Create Post"}
+              <img src="/assets/add-post.svg" />
+            </div>
+          </button>
+        </div>
+      ) : null}
 
       <hr className="h-px mx-10 mt-3 bg-gray-300 border-0" />
-      {
-        !postsLoading ?
-          currentPosts.map((el, i) => {
-            return (
-              <div key={i}>
-                <BlogComponent blog={el} />
-                <hr className="h-px mx-10 my-5 bg-gray-300 border-0" />
-              </div>
-            );
-          })
-          :
-          <div className="text-center py-5 text-2xl ">loading posts...</div>
-      }
+      {!postsLoading ? (
+        currentPosts.map((el, i) => {
+          return (
+            <div key={i}>
+              <BlogComponent blog={el} />
+              <hr className="h-px mx-10 my-5 bg-gray-300 border-0" />
+            </div>
+          );
+        })
+      ) : (
+        <div className="text-center py-5 text-2xl ">loading posts...</div>
+      )}
       <div className="flex flex-col items-center justify-center w-full">
         {isMore ? (
-          !postsLoading &&
-          <button
-            id="btn"
-            className="relative inline-flex items-center justify-center py-0.5 px-10 my-2 mr-2 overflow-hidden text-sm font-bold text-gray-600 rounded-lg bg-gray-200"
-          >
-            <span className="relative px-5 py-2.5" onClick={handleLoadMore}>
-              Load More
-            </span>
-          </button>
+          !postsLoading && (
+            <button
+              id="btn"
+              className="relative inline-flex items-center justify-center py-0.5 px-10 my-2 mr-2 overflow-hidden text-sm font-bold text-gray-600 rounded-lg bg-gray-200"
+            >
+              <span className="relative px-5 py-2.5" onClick={handleLoadMore}>
+                Load More
+              </span>
+            </button>
+          )
         ) : (
           <p className="mb-2">You have reached the end!</p>
         )}
       </div>
-    </div >
+    </div>
   );
-};
+}
+
 interface BlogComponentProps {
   blog: DocumentData;
 }
@@ -221,14 +218,17 @@ const BlogComponent = ({ blog }: BlogComponentProps) => {
   }, [blog.textContent]);
 
   useEffect(() => {
-    setTitleSummary(blog.title.length > 27 ? blog.title.slice(0, 27) + "..." : blog.title);
-  }, [blog.textContent])
+    setTitleSummary(
+      blog.title.length > 27 ? blog.title.slice(0, 27) + "..." : blog.title
+    );
+  }, [blog.textContent]);
 
   const router = useRouter();
   return (
-    <div className="mt-5 mx-10 p-10 md:flex gap-10 hover:bg-gray-100"
+    <div
+      className="mt-5 mx-10 p-10 md:flex gap-10 hover:bg-gray-100"
       onClick={() => {
-        router.push(`/posts/${blog.id}`)
+        router.push(`/posts/${blog.id}`);
       }}
     >
       <div className="flex-1 h-full ">
@@ -256,6 +256,4 @@ const BlogComponent = ({ blog }: BlogComponentProps) => {
       </div>
     </div>
   );
-}
-
-
+};
