@@ -82,6 +82,8 @@ export const AuthProvider = (props: AuthProviderProps) => {
 
       if (user) {
         setUser(user);
+        console.log("User signed in");
+
         await createUserDBEntry(
           user.uid,
           user.email ? user.email : "",
